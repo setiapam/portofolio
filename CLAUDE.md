@@ -9,7 +9,7 @@
 Interactive portfolio website that simulates Neovim in the browser. Visitors navigate using Vim keybindings, open "buffers" to view content, and run `:commands`. All content is dynamic via Supabase — no rebuild needed for content changes.
 
 **Stack:** Nuxt 4.4 + Supabase + TypeScript + Tailwind CSS  
-**Theme:** Tokyo Night (from user's actual Neovim setup)  
+**Theme:** Solarized Osaka (from user's actual Neovim setup)
 **Font:** JetBrains Mono (monospace everywhere)
 
 ---
@@ -18,36 +18,42 @@ Interactive portfolio website that simulates Neovim in the browser. Visitors nav
 
 1. **Everything is a buffer.** Every page is a Neovim buffer. Navigation = switching buffers. URL changes = `:e filename`.
 2. **Vim-first, mouse-second.** Keyboard navigation is primary. Mouse/touch is the fallback — always works, but never the hero.
-3. **Tokyo Night is the default.** All colors derive from the palette below. Never use arbitrary colors.
+3. **Solarized Osaka is the default.** All colors derive from the palette below. Never use arbitrary colors.
 4. **Content from Supabase, always.** Hardcode nothing. Even the dashboard menu items come from `site_config` table.
 5. **TypeScript strict mode.** No `any` types. All Supabase responses are typed via generated types.
 6. **Monospace only.** JetBrains Mono for everything. No sans-serif, no serif, no exceptions.
 
 ---
 
-## Tokyo Night Color Palette
+## Solarized Osaka Color Palette
 
 Use CSS custom properties. Every component references these — never raw hex values.
 
 ```css
 :root {
-  --bg:          #1A1B26;
-  --bg-dark:     #16161E;
-  --bg-highlight:#292E42;
-  --bg-visual:   #283457;
-  --fg:          #C0CAF5;
-  --fg-dark:     #A9B1D6;
-  --fg-gutter:   #3B4261;
-  --comment:     #565F89;
-  --cyan:        #7DCFFF;
-  --blue:        #7AA2F7;
-  --purple:      #BB9AF7;
-  --orange:      #FF9E64;
-  --green:       #9ECE6A;
-  --red:         #F7768E;
-  --yellow:      #E0AF68;
-  --teal:        #2AC3DE;
-  --terminal:    #414868;
+  /* Base backgrounds & foregrounds */
+  --bg:            #001419;   /* base04 - main background */
+  --bg-dark:       #001419;   /* base04 - darkest background */
+  --bg-highlight:  #002C38;   /* base03 - highlighted bg / statusline */
+  --bg-visual:     #063540;   /* base02 - visual selection */
+  --fg:            #839395;   /* base0  - main foreground */
+  --fg-dark:       #576D74;   /* base01 - dimmed foreground */
+  --fg-gutter:     #063540;   /* base02 - gutter/line numbers */
+  --comment:       #576D74;   /* base01 - comments */
+
+  /* Accent colors */
+  --cyan:          #29A298;
+  --blue:          #268BD3;
+  --purple:        #6D71C4;   /* violet */
+  --orange:        #C94C16;
+  --green:         #849900;
+  --red:           #DB302D;
+  --yellow:        #B28500;
+  --teal:          #2AEDDD;   /* cyan300 - brighter cyan */
+  --magenta:       #D23681;
+
+  /* UI elements */
+  --terminal:      #002C38;   /* base03 */
 }
 ```
 
@@ -96,7 +102,7 @@ neovim-portfolio/
 │   ├── css/
 │   │   ├── main.css
 │   │   ├── themes/
-│   │   │   ├── tokyonight.css       # default
+│   │   │   ├── solarized-osaka.css  # default
 │   │   │   ├── catppuccin.css
 │   │   │   └── gruvbox.css
 │   │   └── editor.css
@@ -270,7 +276,7 @@ Example entries:
   { "label": "Config", "icon": "settings", "shortcut": "c", "route": "/config" },
   { "label": "Quit", "icon": "logout", "shortcut": "q", "action": "easter_egg" }
 ]}
-{ "key": "theme", "value": { "default": "tokyonight", "available": ["tokyonight", "catppuccin", "gruvbox"] }}
+{ "key": "theme", "value": { "default": "solarized-osaka", "available": ["solarized-osaka", "catppuccin", "gruvbox"] }}
 { "key": "seo", "value": { "title": "Username - Developer", "description": "..." }}
 ```
 
@@ -503,8 +509,8 @@ Validation errors shown in `--red`. Success in `--green`.
 - Reads available themes from `site_config['theme']`
 - Switches by swapping CSS custom property values on `:root`
 - Persists choice in `localStorage`
-- Switch via `:set theme tokyonight` or `:colorscheme catppuccin`
-- Three themes minimum: Tokyo Night (default), Catppuccin Mocha, Gruvbox Dark
+- Switch via `:set theme solarized-osaka` or `:colorscheme catppuccin`
+- Three themes minimum: Solarized Osaka (default), Catppuccin Mocha, Gruvbox Dark
 
 Each theme file (`assets/css/themes/*.css`) overrides the same CSS custom properties.
 
@@ -553,9 +559,9 @@ Strategies: lazy-load NeoTree and TelescopeFinder, preload JetBrains Mono, code-
 Follow these in order. Each step is self-contained and can be a single AI prompt.
 
 ### Phase 1: Foundation (Steps 1-4)
-1. **Project init** — `npx nuxi@latest init`, install @nuxtjs/supabase, tailwindcss, shiki. Configure nuxt.config.ts with Tokyo Night palette in Tailwind.
+1. **Project init** — `npx nuxi@latest init`, install @nuxtjs/supabase, tailwindcss, shiki. Configure nuxt.config.ts with Solarized Osaka palette in Tailwind.
 2. **Supabase setup** — Create all tables (SQL migration), set up RLS policies, generate TypeScript types, seed initial data.
-3. **Core layout** — `layouts/default.vue` with CSS Grid. Build BufferLine, StatusLine, CommandLine components. Apply Tokyo Night CSS variables.
+3. **Core layout** — `layouts/default.vue` with CSS Grid. Build BufferLine, StatusLine, CommandLine components. Apply Solarized Osaka CSS variables.
 4. **NeoTree sidebar** — Collapsible tree, data from Supabase, toggle with Ctrl+b, responsive off-canvas on mobile.
 
 ### Phase 2: Vim Engine (Steps 5-7)
@@ -596,7 +602,7 @@ Use this template for each step:
 ## Context
 Building a Neovim-themed portfolio website. Nuxt 4.4 + Supabase + TypeScript.
 The website simulates Neovim in the browser with Vim keybindings,
-buffer management, command mode, and Tokyo Night colorscheme.
+buffer management, command mode, and Solarized Osaka colorscheme.
 
 ## Current Task
 [Step description from the phase list above]
@@ -607,7 +613,7 @@ buffer management, command mode, and Tokyo Night colorscheme.
 ## Constraints
 - Nuxt 4.4 with TypeScript strict
 - Supabase for database, auth, storage
-- Tailwind CSS with Tokyo Night palette via CSS custom properties
+- Tailwind CSS with Solarized Osaka palette via CSS custom properties
 - JetBrains Mono as the only font
 - All content fetched from Supabase (nothing hardcoded)
 - Components in components/editor/, components/content/, etc.
