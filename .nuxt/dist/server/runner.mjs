@@ -1,0 +1,1 @@
+export { default } from "file:///home/murphi/Web/nodejs/portofolio/node_modules/@nuxt/vite-builder/dist/vite-node-runner.mjs"
