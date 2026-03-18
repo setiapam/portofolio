@@ -1,0 +1,38 @@
+[data-theme="tokyo-night"] {
+  --bg:            #1A1B26;
+  --bg-dark:       #16161E;
+  --bg-highlight:  #292E42;
+  --bg-visual:     #33467C;
+  --fg:            #C0CAF5;
+  --fg-dark:       #A9B1D6;
+  --fg-gutter:     #3B4261;
+  --comment:       #565F89;
+
+  --cyan:          #7DCFFF;
+  --blue:          #7AA2F7;
+  --purple:        #BB9AF7;
+  --orange:        #FF9E64;
+  --green:         #9ECE6A;
+  --red:           #F7768E;
+  --yellow:        #E0AF68;
+  --teal:          #2AC3DE;
+  --magenta:       #BB9AF7;
+
+  --cyan100:       #B4E8FF;
+  --cyan300:       #7DCFFF;
+  --blue100:       #B4CDFF;
+  --blue300:       #7AA2F7;
+  --orange300:     #FF9E64;
+  --red300:        #F7768E;
+  --green300:      #9ECE6A;
+  --yellow300:     #E0AF68;
+  --violet300:     #BB9AF7;
+
+  --terminal:      #292E42;
+  --black:         #15161E;
+  --border:        #16161E;
+  --bg-popup:      #1A1B26;
+  --bg-statusline: #292E42;
+  --base0:         #C0CAF5;
+  --base1:         #A9B1D6;
+}

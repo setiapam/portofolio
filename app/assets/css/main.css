@@ -1,6 +1,7 @@
 @import './themes/solarized-osaka.css';
 @import './themes/catppuccin-mocha.css';
 @import './themes/gruvbox-dark.css';
+@import './themes/tokyo-night.css';
 
 @font-face {
   font-family: 'JetBrains Mono NF';

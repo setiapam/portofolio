@@ -1,4 +1,4 @@
-const THEMES = ['solarized-osaka', 'catppuccin-mocha', 'gruvbox-dark'] as const
+const THEMES = ['solarized-osaka', 'catppuccin-mocha', 'gruvbox-dark', 'tokyo-night'] as const
 type Theme = (typeof THEMES)[number]
 
 const currentTheme = ref<Theme>('solarized-osaka')
