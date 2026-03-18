@@ -46,6 +46,11 @@ export function useCommandParser() {
       aliases: ['w'],
       description: 'Save (admin only)',
       execute: () => {
+        if (router.currentRoute.value.path.startsWith('/admin')) {
+          // Trigger Ctrl+S programmatically to save
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true }))
+          return
+        }
         setMessage('E45: No write since last change (not in admin mode)')
       },
     },
@@ -54,7 +59,34 @@ export function useCommandParser() {
       aliases: ['wq', 'x'],
       description: 'Save and quit',
       execute: () => {
+        if (router.currentRoute.value.path.startsWith('/admin')) {
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true }))
+          setTimeout(() => router.push('/admin'), 300)
+          return
+        }
         setMessage("E32: Can't quit, this is a website!")
+      },
+    },
+    {
+      name: 'admin',
+      aliases: ['admin'],
+      description: 'Navigate to admin section',
+      execute: (args) => {
+        const section = args.trim()
+        const routes: Record<string, string> = {
+          '': '/admin',
+          projects: '/admin/projects',
+          blog: '/admin/blog',
+          profile: '/admin/profile',
+          messages: '/admin/messages',
+        }
+        const target = routes[section]
+        if (target) {
+          router.push(target)
+          setMessage('')
+        } else {
+          setMessage(`E492: Unknown admin section: ${section}`)
+        }
       },
     },
     {
