@@ -1,6 +1,6 @@
 <template>
     <div class="nav-hint">
-        <span class="hint-key">Backspace</span> dashboard · <span class="hint-key">:</span> command · <span class="hint-key">Ctrl+b</span> sidebar · <span class="hint-key">gt</span>/<span class="hint-key">gT</span> tabs
+        <span class="hint-key">x</span> close tab · <span class="hint-key">Backspace</span> dashboard · <span class="hint-key">/</span> search · <span class="hint-key">?</span> help
     </div>
 </template>
 

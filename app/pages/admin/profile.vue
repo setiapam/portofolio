@@ -66,14 +66,17 @@ const { data: profileData } = await useAsyncData('admin-profile', async () => {
     return data as Profile | null
 })
 
-const profile = ref<Record<string, any>>({})
-watchEffect(() => {
-    if (profileData.value) {
-        profile.value = { ...profileData.value }
-    }
+const profile = ref<Record<string, any>>(profileData.value ? { ...profileData.value } : {})
+watch(profileData, (val) => {
+    if (val) profile.value = { ...val }
 })
 
 async function save() {
+    if (!profile.value.id) {
+        message.value = 'E: No profile ID found'
+        messageClass.value = 'msg-error'
+        return
+    }
     const { error } = await client
         .from('profiles')
         .update({

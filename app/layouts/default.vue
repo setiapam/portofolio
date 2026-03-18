@@ -28,6 +28,9 @@
 
     <!-- Telescope overlay -->
     <EditorTelescopeFinder ref="telescopeRef" />
+
+    <!-- Keybindings help overlay -->
+    <EditorKeybindingsHelp ref="helpRef" />
   </div>
 </template>
 
@@ -36,12 +39,14 @@ const { state, toggleSidebar } = useBufferManager()
 const { install, uninstall } = useVimMode()
 const { initTheme } = useTheme()
 
-const { telescopeOpen } = useSharedState()
+const { telescopeOpen, helpOpen } = useSharedState()
 const telescopeRef = ref<{ open: () => void } | null>(null)
+const helpRef = ref<{ open: () => void } | null>(null)
 const isMobile = ref(false)
 
-// Register telescope open in shared state
+// Register callbacks in shared state
 telescopeOpen.value = () => telescopeRef.value?.open()
+helpOpen.value = () => helpRef.value?.open()
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768

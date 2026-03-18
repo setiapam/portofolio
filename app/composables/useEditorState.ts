@@ -19,8 +19,9 @@ const commandHistory = ref<string[]>([])
 
 const KEY_TIMEOUT = 500
 
-// Telescope open callback (set by layout)
+// Callbacks (set by layout)
 const telescopeOpen = ref<(() => void) | null>(null)
+const helpOpen = ref<(() => void) | null>(null)
 
 // ── Export shared refs for all composables ──
 export function useSharedState() {
@@ -33,6 +34,7 @@ export function useSharedState() {
     commandHistory,
     KEY_TIMEOUT,
     telescopeOpen,
+    helpOpen,
   }
 }
 

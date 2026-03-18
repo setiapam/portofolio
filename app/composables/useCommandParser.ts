@@ -6,7 +6,7 @@ interface CommandDef {
 }
 
 export function useCommandParser() {
-  const { commandMessage, commandHistory, editorState, telescopeOpen } = useSharedState()
+  const { commandMessage, commandHistory, editorState, telescopeOpen, helpOpen } = useSharedState()
   const router = useRouter()
 
   const commands: CommandDef[] = [
@@ -156,7 +156,12 @@ export function useCommandParser() {
       aliases: ['h'],
       description: 'Show help / keybindings',
       execute: () => {
-        setMessage('hjkl=scroll  gg/G=top/bottom  :=command  i=insert  /=search  gt/gT=tabs  Ctrl+b=sidebar')
+        if (helpOpen.value) {
+          helpOpen.value()
+          setMessage('')
+        } else {
+          setMessage('hjkl=scroll  gg/G=top/bottom  :=command  i=insert  /=search  ?=help')
+        }
       },
     },
     {
@@ -183,6 +188,17 @@ export function useCommandParser() {
       execute: () => {
         router.push('/admin/login')
         setMessage('')
+      },
+    },
+    {
+      name: 'logout',
+      aliases: ['logout'],
+      description: 'Sign out',
+      execute: async () => {
+        const client = useSupabaseClient()
+        await client.auth.signOut()
+        router.push('/')
+        setMessage('Logged out')
       },
     },
   ]

@@ -61,6 +61,7 @@ interface SearchResult {
 
 const client = useSupabaseClient<Database>()
 const router = useRouter()
+const user = useSupabaseUser()
 
 const isOpen = ref(false)
 const query = ref('')
@@ -75,10 +76,19 @@ const staticPages: SearchResult[] = [
     { label: 'projects/', path: '/projects', icon: '', type: 'page' },
     { label: 'blog/', path: '/blog', icon: '', type: 'page' },
     { label: 'contact.md', path: '/contact', icon: '', type: 'page' },
+    { label: 'terminal', path: '/terminal', icon: '', type: 'page' },
 ]
 
-// Fetch dynamic content
-const { data: projects } = await useAsyncData('telescope-projects', async () => {
+const adminPages: SearchResult[] = [
+    { label: 'admin/', path: '/admin', icon: '', type: 'admin' },
+    { label: 'admin/profile', path: '/admin/profile', icon: '', type: 'admin' },
+    { label: 'admin/projects', path: '/admin/projects', icon: '', type: 'admin' },
+    { label: 'admin/blog', path: '/admin/blog', icon: '', type: 'admin' },
+    { label: 'admin/messages', path: '/admin/messages', icon: '', type: 'admin' },
+]
+
+// Fetch dynamic content (lazy so component doesn't block layout rendering)
+const { data: projects } = useLazyAsyncData('telescope-projects', async () => {
     const { data } = await client
         .from('projects')
         .select('slug, title')
@@ -87,7 +97,7 @@ const { data: projects } = await useAsyncData('telescope-projects', async () => 
     return (data ?? []) as { slug: string; title: string }[]
 })
 
-const { data: blogPosts } = await useAsyncData('telescope-blog', async () => {
+const { data: blogPosts } = useLazyAsyncData('telescope-blog', async () => {
     const { data } = await client
         .from('blog_posts')
         .select('slug, title')
@@ -98,6 +108,10 @@ const { data: blogPosts } = await useAsyncData('telescope-blog', async () => {
 
 const allResults = computed<SearchResult[]>(() => {
     const results: SearchResult[] = [...staticPages]
+
+    if (user.value) {
+        results.push(...adminPages)
+    }
 
     projects.value?.forEach(p => {
         results.push({ label: `${p.slug}.md`, path: `/projects/${p.slug}`, icon: '', type: 'project' })

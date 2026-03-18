@@ -21,7 +21,7 @@
                 {{ loadTime }}ms
             </div>
             <div class="dashboard-hint">
-                Press shortcut key to navigate · <span class="hint-key">:</span> command mode · <span class="hint-key">Ctrl+b</span> toggle sidebar
+                Press shortcut key to navigate · <span class="hint-key">/</span> search · <span class="hint-key">?</span> help · <span class="hint-key">:</span> command
             </div>
         </div>
     </EditorContent>
@@ -109,6 +109,8 @@ function onDashboardKey(e: KeyboardEvent) {
     if (vimMode.value !== 'NORMAL') return
     const tag = (e.target as HTMLElement)?.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA') return
+
+    if (e.ctrlKey || e.metaKey || e.altKey) return
 
     const key = e.key
     const item = menuItems.value.find(m => m.shortcut === key)

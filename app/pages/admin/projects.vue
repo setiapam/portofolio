@@ -81,9 +81,13 @@ definePageMeta({ middleware: 'auth' })
 
 type Project = Database['public']['Tables']['projects']['Row']
 const client = useSupabaseClient<Database>()
-const user = useSupabaseUser()
 const message = ref('')
 const messageClass = ref('')
+
+const { data: profileId } = await useAsyncData('admin-profile-id', async () => {
+    const { data } = await client.from('profiles').select('id').limit(1).single()
+    return (data as { id: string } | null)?.id ?? null
+})
 
 const { data: projects, refresh } = await useAsyncData('admin-projects', async () => {
     const { data } = await client.from('projects').select('*').order('sort_order')
@@ -142,7 +146,12 @@ async function save() {
     if (editing.value.id) {
         ({ error } = await client.from('projects').update(payload).eq('id', editing.value.id))
     } else {
-        ({ error } = await client.from('projects').insert({ ...payload, profile_id: user.value!.id }))
+        if (!profileId.value) {
+            message.value = 'E: No profile found. Create a profile first.'
+            messageClass.value = 'msg-error'
+            return
+        }
+        ({ error } = await client.from('projects').insert({ ...payload, profile_id: profileId.value }))
     }
 
     if (error) {

@@ -1,5 +1,5 @@
 export function useVimMode() {
-  const { vimMode, keyBuffer, pendingKeys, editorState, KEY_TIMEOUT, telescopeOpen } = useSharedState()
+  const { vimMode, keyBuffer, pendingKeys, editorState, KEY_TIMEOUT, telescopeOpen, helpOpen } = useSharedState()
 
   const LINE_HEIGHT = 22
 
@@ -150,7 +150,33 @@ export function useVimMode() {
         e.preventDefault()
         navigateTo('/')
         break
+      case 'x':
+        e.preventDefault()
+        closeCurrentBuffer()
+        break
+      case '?':
+        e.preventDefault()
+        if (helpOpen.value) helpOpen.value()
+        break
     }
+  }
+
+  function closeCurrentBuffer() {
+    const buffers = editorState.buffers
+    const idx = buffers.findIndex(b => b.id === editorState.activeBufferId)
+    if (idx === -1) {
+      navigateTo('/')
+      return
+    }
+    buffers.splice(idx, 1)
+    if (buffers.length === 0) {
+      editorState.activeBufferId = null
+      navigateTo('/')
+      return
+    }
+    const next = buffers[Math.min(idx, buffers.length - 1)]
+    editorState.activeBufferId = next.path
+    navigateTo(next.path)
   }
 
   function switchBufferDirection(direction: 'next' | 'prev') {
