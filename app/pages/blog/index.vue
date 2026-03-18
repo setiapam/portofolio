@@ -197,7 +197,7 @@ useHead({ title: 'Blog' })
 }
 
 .filter-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     color: var(--purple);
     background: transparent;
@@ -218,7 +218,7 @@ useHead({ title: 'Blog' })
 }
 
 .filter-clear {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     color: var(--red);
     background: transparent;

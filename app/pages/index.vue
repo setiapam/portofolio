@@ -63,10 +63,10 @@ const asciiArt = computed(() => {
 
 const menuItems = computed(() => {
     return [
-        { label: 'About', icon: 'file', shortcut: 'a', route: '/about' },
+        { label: 'About', icon: 'about', shortcut: 'a', route: '/about' },
         { label: 'Projects', icon: 'search', shortcut: 'p', route: '/projects' },
         { label: 'Blog', icon: 'grep', shortcut: 'b', route: '/blog' },
-        { label: 'Contact', icon: 'file', shortcut: 'c', route: '/contact' },
+        { label: 'Contact', icon: 'contact', shortcut: 'c', route: '/contact' },
         { label: 'Lazy', icon: 'lazy', shortcut: 'l', action: 'easter_egg' },
         { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'easter_egg' },
     ]
@@ -76,13 +76,10 @@ const pluginCount = 7
 const totalPlugins = 41
 
 const iconMap: Record<string, string> = {
+    about: '󰋽',
     search: '󰈞',
-    file: '',
     grep: '󰊄',
-    clock: '',
-    settings: '',
-    restore: '',
-    extras: '',
+    contact: '󰇮',
     lazy: '󰒲',
     logout: '󰈆',
 }
@@ -162,7 +159,7 @@ onUnmounted(() => {
     align-items: center;
     gap: 12px;
     padding: 4px 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--cyan);
     background: transparent;

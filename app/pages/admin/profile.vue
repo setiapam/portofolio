@@ -138,7 +138,7 @@ useHead({ title: 'Admin - Profile' })
 
 .field-input {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: var(--bg-highlight);
@@ -152,7 +152,7 @@ useHead({ title: 'Admin - Profile' })
 
 .ascii-textarea {
     width: 100%;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.3;
     color: var(--cyan);
@@ -171,7 +171,7 @@ useHead({ title: 'Admin - Profile' })
 }
 
 .btn-save {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     color: var(--bg);
     background: var(--green);

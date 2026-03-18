@@ -87,7 +87,7 @@ useHead({ title: 'Admin' })
     gap: 12px;
     padding: 6px 12px;
     text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: transparent;

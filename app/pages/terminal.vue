@@ -292,7 +292,7 @@ useHead({ title: 'Terminal' })
 .terminal-output {
     color: var(--fg);
     margin: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
 }
 
@@ -314,7 +314,7 @@ useHead({ title: 'Terminal' })
 
 .terminal-input {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: transparent;

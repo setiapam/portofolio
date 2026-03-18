@@ -47,7 +47,7 @@ const { state, openBuffer, closeBuffer } = useBufferManager()
   align-items: center;
   gap: 6px;
   padding: 6px 16px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--comment);
   background: transparent;

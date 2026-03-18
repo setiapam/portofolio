@@ -117,7 +117,7 @@ useHead({ title: 'Admin Login' })
 
 .terminal-line pre {
     margin: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
 }
@@ -150,7 +150,7 @@ useHead({ title: 'Admin Login' })
 
 .login-input {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: transparent;

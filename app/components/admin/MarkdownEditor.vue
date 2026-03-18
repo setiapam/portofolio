@@ -81,7 +81,7 @@ defineExpose({ textareaRef })
 
 .editor-textarea {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     line-height: 22px;
     color: var(--fg);

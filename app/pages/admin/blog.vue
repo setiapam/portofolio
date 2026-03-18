@@ -170,14 +170,14 @@ useHead({ title: 'Admin - Blog' })
 .field { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .field-label { color: var(--cyan); min-width: 110px; flex-shrink: 0; font-size: 13px; }
 .field-input {
-    flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    flex: 1; font-family: var(--font-mono); font-size: 14px;
     color: var(--fg); background: var(--bg-highlight); border: 1px solid var(--bg-visual);
     padding: 4px 8px; outline: none; caret-color: var(--green);
 }
 .field-input:focus { border-color: var(--blue); }
 .actions { display: flex; gap: 12px; align-items: center; }
 .btn-save {
-    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    font-family: var(--font-mono); font-size: 13px;
     color: var(--bg); background: var(--green); border: none;
     padding: 4px 16px; cursor: pointer; border-radius: 2px;
 }

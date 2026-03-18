@@ -68,7 +68,7 @@ function formatDate(val: any): string {
 }
 
 .btn-new {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     color: var(--green);
     background: transparent;
@@ -150,7 +150,7 @@ function formatDate(val: any): string {
 }
 
 .row-delete {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 16px;
     color: var(--comment);
     background: transparent;

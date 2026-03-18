@@ -256,7 +256,7 @@ defineExpose({ open, close, isOpen })
 
 .telescope-input {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: transparent;

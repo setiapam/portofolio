@@ -269,7 +269,7 @@ useHead({ title: 'Contact' })
 }
 
 .prompt-input {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: transparent;
@@ -298,7 +298,7 @@ useHead({ title: 'Contact' })
 }
 
 .message-input {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--fg);
     background: var(--bg-highlight);
@@ -340,7 +340,7 @@ useHead({ title: 'Contact' })
 }
 
 .reset-btn {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--cyan);
     background: transparent;

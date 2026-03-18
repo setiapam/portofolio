@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#001419"/>
+      <stop offset="100%" stop-color="#002C38"/>
+    </linearGradient>
+  </defs>
+  <!-- Background: rounded terminal window -->
+  <rect width="64" height="64" rx="12" fill="url(#bg)" stroke="#063540" stroke-width="2"/>
+  <!-- Cursor block -->
+  <rect x="14" y="16" width="12" height="22" rx="2" fill="#29A298" opacity="0.85"/>
+  <!-- Vim-style chevron > -->
+  <path d="M34 18 L48 27 L34 36" fill="none" stroke="#268BD3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Underline / command line -->
+  <rect x="12" y="44" width="40" height="3" rx="1.5" fill="#576D74"/>
+  <!-- Colon : prompt dots -->
+  <circle cx="16" cy="52" r="2" fill="#C94C16"/>
+  <circle cx="16" cy="57" r="2" fill="#C94C16"/>
+</svg>

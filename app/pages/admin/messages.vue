@@ -98,7 +98,7 @@ useHead({ title: 'Admin - Messages' })
 }
 
 .btn-read, .btn-delete {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     background: transparent;
     border: 1px solid;

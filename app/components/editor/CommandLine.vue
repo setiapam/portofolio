@@ -106,7 +106,7 @@ const messageClass = computed(() => {
     align-items: center;
     padding: 2px 8px;
     font-size: 13px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     background-color: var(--bg);
     min-height: 24px;
 }
@@ -169,7 +169,7 @@ const messageClass = computed(() => {
     display: block;
     width: 100%;
     padding: 3px 12px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     color: var(--fg);
     background: transparent;

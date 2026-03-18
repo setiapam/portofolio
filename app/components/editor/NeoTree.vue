@@ -114,7 +114,7 @@ watch(() => route.path, () => {
     gap: 4px;
     width: 100%;
     padding: 3px 12px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     color: var(--fg);
     background: transparent;
