@@ -17,8 +17,7 @@
 
             <!-- Footer -->
             <div class="dashboard-footer">
-                <span class="footer-bolt">&#x26A1;</span> Neovim loaded {{ pluginCount }}/{{ totalPlugins }} plugins in
-                {{ loadTime }}ms
+                <span class="footer-bolt">&#x26A1;</span> Website loaded in {{ loadTime }}ms
             </div>
             <div class="dashboard-hint">
                 Press shortcut key to navigate · <span class="hint-key">/</span> search · <span class="hint-key">?</span> help · <span class="hint-key">:</span> command
@@ -71,9 +70,6 @@ const menuItems = computed(() => {
         { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'easter_egg' },
     ]
 })
-
-const pluginCount = 7
-const totalPlugins = 41
 
 const iconMap: Record<string, string> = {
     about: '󰋽',
@@ -211,13 +207,36 @@ onUnmounted(() => {
 }
 
 @media (max-width: 767px) {
+    .dashboard {
+        gap: 20px;
+        padding: 12px;
+        justify-content: start;
+        padding-top: 10vh;
+    }
+
     .ascii-header {
-        font-size: 9px;
+        font-size: 7px;
+        line-height: 1.2;
     }
 
     .menu-items {
         min-width: auto;
         width: 100%;
+    }
+
+    .menu-item {
+        padding: 10px 16px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+
+    .dashboard-footer {
+        font-size: 12px;
+    }
+
+    .dashboard-hint {
+        font-size: 11px;
+        display: none;
     }
 }
 </style>

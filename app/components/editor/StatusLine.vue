@@ -89,9 +89,14 @@ const modeClass = computed(() => {
 
 /* Mobile: only show mode + position */
 @media (max-width: 767px) {
+  .statusline {
+    padding: 4px 8px;
+  }
+
   .statusline-center {
     display: none;
   }
+
   .filetype {
     display: none;
   }

@@ -20,6 +20,14 @@
       <slot />
     </main>
 
+    <!-- Mobile Toolbar — touch access to NeoTree, search, commands -->
+    <EditorMobileToolbar
+      @toggle-sidebar="toggleSidebar"
+      @open-telescope="telescopeRef?.open()"
+      @open-command="setMode('COMMAND')"
+      @open-help="helpRef?.open()"
+    />
+
     <!-- StatusLine — full width -->
     <EditorStatusLine />
 
@@ -36,7 +44,7 @@
 
 <script setup lang="ts">
 const { state, toggleSidebar } = useBufferManager()
-const { install, uninstall } = useVimMode()
+const { install, uninstall, setMode } = useVimMode()
 const { initTheme } = useTheme()
 
 const { telescopeOpen, helpOpen } = useSharedState()
@@ -72,12 +80,20 @@ onUnmounted(() => {
 <style scoped>
 .editor-layout {
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto 1fr auto auto auto;
   grid-template-columns: auto 1fr;
-  height: 100vh;
+  height: 100dvh;
+  height: 100vh; /* fallback for older browsers */
   overflow: hidden;
   background-color: var(--bg);
   color: var(--fg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@supports (height: 100dvh) {
+  .editor-layout {
+    height: 100dvh;
+  }
 }
 
 /* BufferLine spans full width */
@@ -102,6 +118,11 @@ onUnmounted(() => {
 
 /* StatusLine spans full width */
 .editor-layout > :deep(.statusline) {
+  grid-column: 1 / -1;
+}
+
+/* MobileToolbar spans full width */
+.editor-layout > :deep(.mobile-toolbar) {
   grid-column: 1 / -1;
 }
 
@@ -138,6 +159,7 @@ onUnmounted(() => {
     left: 0;
     bottom: 0;
     z-index: 20;
+    height: 100dvh;
     height: 100vh;
   }
 
