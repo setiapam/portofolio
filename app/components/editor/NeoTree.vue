@@ -77,7 +77,12 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const client = useSupabaseClient()
+import type { Database } from '~/types/database'
+
+type ProjectItem = { slug: string; title: string }
+type BlogItem = { slug: string; title: string }
+
+const client = useSupabaseClient<Database>()
 
 const projectsOpen = ref(true)
 const blogOpen = ref(false)
@@ -88,7 +93,7 @@ const { data: projects } = await useAsyncData('neotree-projects', async () => {
     .select('slug, title')
     .eq('status', 'published')
     .order('sort_order')
-  return data ?? []
+  return (data ?? []) as ProjectItem[]
 })
 
 const { data: blogPosts } = await useAsyncData('neotree-blog', async () => {
@@ -97,7 +102,7 @@ const { data: blogPosts } = await useAsyncData('neotree-blog', async () => {
     .select('slug, title')
     .eq('status', 'published')
     .order('published_at', { ascending: false })
-  return data ?? []
+  return (data ?? []) as BlogItem[]
 })
 </script>
 

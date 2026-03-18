@@ -27,6 +27,10 @@ export default defineNuxtConfig({
     configPath: 'tailwind.config.ts',
   },
 
+  runtimeConfig: {
+    supabaseServiceKey: '',
+  },
+
   app: {
     head: {
       htmlAttrs: { lang: 'en' },

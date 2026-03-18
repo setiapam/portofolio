@@ -25,11 +25,14 @@
 </template>
 
 <script setup lang="ts">
-const client = useSupabaseClient()
+import type { Database } from '~/types/database'
+const client = useSupabaseClient<Database>()
 
 const startTime = Date.now()
 const loadTime = ref(0)
 const activeIndex = ref(0)
+
+type Profile = Database['public']['Tables']['profiles']['Row']
 
 // Fetch profile for ASCII art
 const { data: profile } = await useAsyncData('profile', async () => {
@@ -38,7 +41,7 @@ const { data: profile } = await useAsyncData('profile', async () => {
         .select('ascii_art')
         .limit(1)
         .single()
-    return data
+    return data as Pick<Profile, 'ascii_art'> | null
 })
 
 // Fetch dashboard menu from site_config
@@ -48,7 +51,8 @@ const { data: menuConfig } = await useAsyncData('dashboard-menu', async () => {
         .select('value')
         .eq('key', 'dashboard_menu')
         .single()
-    return data?.value as Array<{ label: string; icon: string; shortcut: string; route?: string; action?: string }> | null
+    const row = data as { value: unknown } | null
+    return row?.value as Array<{ label: string; icon: string; shortcut: string; route?: string; action?: string }> | null
 })
 
 const asciiArt = computed(() => {
