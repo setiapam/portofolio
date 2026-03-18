@@ -1,0 +1,44 @@
+@import './themes/solarized-osaka.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  ::selection {
+    background-color: var(--bg-visual);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--bg-highlight);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--comment);
+  }
+}

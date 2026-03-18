@@ -1,0 +1,42 @@
+:root {
+  /* Base backgrounds & foregrounds */
+  --bg:            #001419;   /* base04 — bg */
+  --bg-dark:       #001014;   /* black — util.darken(bg, 0.8) */
+  --bg-highlight:  #002C38;   /* base03 — bg_highlight */
+  --bg-visual:     #063540;   /* base02 */
+  --fg:            #839395;   /* fg — hsl(186, 8, 55) */
+  --fg-dark:       #637981;   /* base00 */
+  --fg-gutter:     #576D74;   /* base01 */
+  --comment:       #576D74;   /* base01 */
+
+  /* Accent colors */
+  --cyan:          #29A298;   /* cyan — hsl(175, 59, 40) */
+  --blue:          #268BD3;   /* blue — hsl(205, 69, 49) */
+  --purple:        #6D71C4;   /* violet — hsl(237, 43, 60) */
+  --orange:        #C94C16;   /* orange — hsl(18, 80, 44) */
+  --green:         #849900;   /* green — hsl(68, 100, 30) */
+  --red:           #DB302D;   /* red — hsl(1, 71, 52) */
+  --yellow:        #B28500;   /* yellow — hsl(45, 100, 35) */
+  --teal:          #2AEDDD;   /* cyan300 — hsl(175, 85, 55) */
+  --magenta:       #D23681;   /* magenta — hsl(331, 64, 52) */
+
+  /* Variant shades */
+  --cyan100:       #B7FEFA;
+  --cyan300:       #2AEDDD;
+  --blue100:       #A8DAFF;
+  --blue300:       #46ACF5;
+  --orange300:     #F74F0C;
+  --red300:        #F55350;
+  --green300:      #B7F900;
+  --yellow300:     #FFBF00;
+  --violet300:     #9B9FEC;
+
+  /* UI elements */
+  --terminal:      #002C38;   /* base03 */
+  --black:         #001014;   /* border */
+  --border:        #001014;
+  --bg-popup:      #001419;   /* base04 */
+  --bg-statusline: #002C38;   /* base03 */
+  --base0:         #9EABAC;   /* hsl(186, 8, 65) */
+  --base1:         #ADB7B7;   /* hsl(180, 7, 70) */
+}

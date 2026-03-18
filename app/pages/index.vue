@@ -1,0 +1,199 @@
+<template>
+    <EditorContent>
+        <div class="dashboard">
+            <!-- ASCII Art Header -->
+            <pre class="ascii-header">{{ asciiArt }}</pre>
+
+            <!-- Menu Items -->
+            <div class="menu-items">
+                <button v-for="(item, index) in menuItems" :key="item.label" class="menu-item"
+                    :class="{ active: index === activeIndex }" @click="handleMenuItem(item)"
+                    @mouseenter="activeIndex = index">
+                    <span class="menu-icon">{{ getMenuIcon(item.icon) }}</span>
+                    <span class="menu-label">{{ item.label }}</span>
+                    <span class="menu-shortcut">{{ item.shortcut }}</span>
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="dashboard-footer">
+                <span class="footer-bolt">&#x26A1;</span> Neovim loaded {{ pluginCount }}/{{ totalPlugins }} plugins in
+                {{ loadTime }}ms
+            </div>
+        </div>
+    </EditorContent>
+</template>
+
+<script setup lang="ts">
+const client = useSupabaseClient()
+
+const startTime = Date.now()
+const loadTime = ref(0)
+const activeIndex = ref(0)
+
+// Fetch profile for ASCII art
+const { data: profile } = await useAsyncData('profile', async () => {
+    const { data } = await client
+        .from('profiles')
+        .select('ascii_art')
+        .limit(1)
+        .single()
+    return data
+})
+
+// Fetch dashboard menu from site_config
+const { data: menuConfig } = await useAsyncData('dashboard-menu', async () => {
+    const { data } = await client
+        .from('site_config')
+        .select('value')
+        .eq('key', 'dashboard_menu')
+        .single()
+    return data?.value as Array<{ label: string; icon: string; shortcut: string; route?: string; action?: string }> | null
+})
+
+const asciiArt = computed(() => {
+    return profile.value?.ascii_art ?? `
+                 ▄ ▄  
+             ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     
+             █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     
+          ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     
+        ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  
+        █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄
+      ▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █
+      █▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █
+      █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█
+    `.trim()
+})
+
+const menuItems = computed(() => {
+    return menuConfig.value ?? [
+        { label: 'Find File', icon: 'search', shortcut: 'f', route: '/projects' },
+        { label: 'New File', icon: 'file', shortcut: 'n', route: '/contact' },
+        { label: 'Find Text', icon: 'grep', shortcut: 'g', route: '/blog' },
+        { label: 'Recent Files', icon: 'clock', shortcut: 'r', route: '/blog' },
+        { label: 'Config', icon: 'settings', shortcut: 'c', route: '/about' },
+        { label: 'Restore Session', icon: 'restore', shortcut: 's', action: 'easter_egg' },
+        { label: 'Lazy Extras', icon: 'extras', shortcut: 'x', action: 'easter_egg' },
+        { label: 'Lazy', icon: 'lazy', shortcut: 'l', action: 'easter_egg' },
+        { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'easter_egg' },
+    ]
+})
+
+const pluginCount = 7
+const totalPlugins = 41
+
+const iconMap: Record<string, string> = {
+    search: '󰈞',
+    file: '',
+    grep: '󰊄',
+    clock: '',
+    settings: '',
+    restore: '',
+    extras: '',
+    lazy: '󰒲',
+    logout: '󰈆',
+}
+
+function getMenuIcon(icon: string): string {
+    return iconMap[icon] ?? ''
+}
+
+function handleMenuItem(item: { route?: string; action?: string }) {
+    if (item.action === 'easter_egg') {
+        const { setCommandMessage } = useEditorState()
+        setCommandMessage("E32: Can't quit, this is a website!")
+        return
+    }
+    if (item.route) {
+        navigateTo(item.route)
+    }
+}
+
+onMounted(() => {
+    loadTime.value = Date.now() - startTime
+})
+</script>
+
+<style scoped>
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: 48px 16px;
+    gap: 40px;
+}
+
+.ascii-header {
+    color: var(--cyan);
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+    white-space: pre;
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 360px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--cyan);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.05s;
+}
+
+.menu-item.active {
+    background-color: var(--bg-highlight);
+}
+
+.menu-icon {
+    width: 20px;
+    text-align: center;
+    color: var(--cyan);
+    font-size: 15px;
+}
+
+.menu-label {
+    flex: 1;
+    color: var(--cyan);
+}
+
+.menu-shortcut {
+    color: var(--orange);
+    font-size: 14px;
+}
+
+.dashboard-footer {
+    color: var(--comment);
+    font-size: 13px;
+    text-align: center;
+}
+
+.footer-bolt {
+    color: var(--yellow);
+}
+
+@media (max-width: 767px) {
+    .ascii-header {
+        font-size: 9px;
+    }
+
+    .menu-items {
+        min-width: auto;
+        width: 100%;
+    }
+}
+</style>
