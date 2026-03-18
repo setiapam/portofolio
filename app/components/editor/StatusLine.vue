@@ -22,10 +22,11 @@
 </template>
 
 <script setup lang="ts">
-const { vimMode } = useEditorState()
+const { mode: vimMode } = useVimMode()
+const { state } = useBufferManager()
 
-const line = ref(1)
-const col = ref(1)
+const line = computed(() => state.cursorLine)
+const col = computed(() => state.cursorCol)
 
 const modeClass = computed(() => {
   const map: Record<string, string> = {

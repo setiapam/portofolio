@@ -11,4 +11,6 @@ export interface EditorState {
   activeBufferId: string | null
   sidebarOpen: boolean
   lineNumbers: boolean
+  cursorLine: number
+  cursorCol: number
 }

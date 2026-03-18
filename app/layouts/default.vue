@@ -29,7 +29,8 @@
 </template>
 
 <script setup lang="ts">
-const { state, toggleSidebar } = useEditorState()
+const { state, toggleSidebar } = useBufferManager()
+const { install, uninstall } = useVimMode()
 
 const isMobile = ref(false)
 
@@ -40,8 +41,8 @@ function checkMobile() {
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  install()
 
-  // Hide sidebar on mobile by default
   if (isMobile.value) {
     state.sidebarOpen = false
   }
@@ -49,6 +50,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
+  uninstall()
 })
 </script>
 

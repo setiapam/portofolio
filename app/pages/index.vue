@@ -100,8 +100,8 @@ function getMenuIcon(icon: string): string {
 
 function handleMenuItem(item: { route?: string; action?: string }) {
     if (item.action === 'easter_egg') {
-        const { setCommandMessage } = useEditorState()
-        setCommandMessage("E32: Can't quit, this is a website!")
+        const { setMessage } = useCommandParser()
+        setMessage("E32: Can't quit, this is a website!")
         return
     }
     if (item.route) {
@@ -109,8 +109,30 @@ function handleMenuItem(item: { route?: string; action?: string }) {
     }
 }
 
+const { mode: vimMode } = useVimMode()
+
+function onDashboardKey(e: KeyboardEvent) {
+    // Only handle in NORMAL mode, not when typing in input
+    if (vimMode.value !== 'NORMAL') return
+    const tag = (e.target as HTMLElement)?.tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+
+    const key = e.key
+    const item = menuItems.value.find(m => m.shortcut === key)
+    if (item) {
+        e.preventDefault()
+        e.stopPropagation()
+        handleMenuItem(item)
+    }
+}
+
 onMounted(() => {
     loadTime.value = Date.now() - startTime
+    window.addEventListener('keydown', onDashboardKey, true) // capture phase
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', onDashboardKey, true)
 })
 </script>
 
@@ -120,9 +142,9 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100%;
-    padding: 48px 16px;
-    gap: 40px;
+    height: 100%;
+    padding: 16px;
+    gap: 32px;
 }
 
 .ascii-header {

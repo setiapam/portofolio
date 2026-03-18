@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-const { state, openBuffer, closeBuffer } = useEditorState()
+const { state, openBuffer, closeBuffer } = useBufferManager()
 </script>
 
 <style scoped>
