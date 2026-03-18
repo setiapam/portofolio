@@ -1,0 +1,38 @@
+[data-theme="catppuccin-mocha"] {
+  --bg:            #1E1E2E;
+  --bg-dark:       #181825;
+  --bg-highlight:  #313244;
+  --bg-visual:     #45475A;
+  --fg:            #CDD6F4;
+  --fg-dark:       #BAC2DE;
+  --fg-gutter:     #6C7086;
+  --comment:       #6C7086;
+
+  --cyan:          #94E2D5;
+  --blue:          #89B4FA;
+  --purple:        #CBA6F7;
+  --orange:        #FAB387;
+  --green:         #A6E3A1;
+  --red:           #F38BA8;
+  --yellow:        #F9E2AF;
+  --teal:          #94E2D5;
+  --magenta:       #F5C2E7;
+
+  --cyan100:       #C9F5EE;
+  --cyan300:       #94E2D5;
+  --blue100:       #BDD5FD;
+  --blue300:       #89B4FA;
+  --orange300:     #FAB387;
+  --red300:        #F38BA8;
+  --green300:      #A6E3A1;
+  --yellow300:     #F9E2AF;
+  --violet300:     #CBA6F7;
+
+  --terminal:      #313244;
+  --black:         #11111B;
+  --border:        #181825;
+  --bg-popup:      #1E1E2E;
+  --bg-statusline: #313244;
+  --base0:         #CDD6F4;
+  --base1:         #BAC2DE;
+}

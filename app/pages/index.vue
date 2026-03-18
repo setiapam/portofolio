@@ -20,6 +20,9 @@
                 <span class="footer-bolt">&#x26A1;</span> Neovim loaded {{ pluginCount }}/{{ totalPlugins }} plugins in
                 {{ loadTime }}ms
             </div>
+            <div class="dashboard-hint">
+                Press shortcut key to navigate · <span class="hint-key">:</span> command mode · <span class="hint-key">Ctrl+b</span> toggle sidebar
+            </div>
         </div>
     </EditorContent>
 </template>
@@ -44,17 +47,6 @@ const { data: profile } = await useAsyncData('profile', async () => {
     return data as Pick<Profile, 'ascii_art'> | null
 })
 
-// Fetch dashboard menu from site_config
-const { data: menuConfig } = await useAsyncData('dashboard-menu', async () => {
-    const { data } = await client
-        .from('site_config')
-        .select('value')
-        .eq('key', 'dashboard_menu')
-        .single()
-    const row = data as { value: unknown } | null
-    return row?.value as Array<{ label: string; icon: string; shortcut: string; route?: string; action?: string }> | null
-})
-
 const asciiArt = computed(() => {
     return profile.value?.ascii_art ?? `
                  ▄ ▄  
@@ -70,14 +62,11 @@ const asciiArt = computed(() => {
 })
 
 const menuItems = computed(() => {
-    return menuConfig.value ?? [
-        { label: 'Find File', icon: 'search', shortcut: 'f', route: '/projects' },
-        { label: 'New File', icon: 'file', shortcut: 'n', route: '/contact' },
-        { label: 'Find Text', icon: 'grep', shortcut: 'g', route: '/blog' },
-        { label: 'Recent Files', icon: 'clock', shortcut: 'r', route: '/blog' },
-        { label: 'Config', icon: 'settings', shortcut: 'c', route: '/about' },
-        { label: 'Restore Session', icon: 'restore', shortcut: 's', action: 'easter_egg' },
-        { label: 'Lazy Extras', icon: 'extras', shortcut: 'x', action: 'easter_egg' },
+    return [
+        { label: 'About', icon: 'file', shortcut: 'a', route: '/about' },
+        { label: 'Projects', icon: 'search', shortcut: 'p', route: '/projects' },
+        { label: 'Blog', icon: 'grep', shortcut: 'b', route: '/blog' },
+        { label: 'Contact', icon: 'file', shortcut: 'c', route: '/contact' },
         { label: 'Lazy', icon: 'lazy', shortcut: 'l', action: 'easter_egg' },
         { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'easter_egg' },
     ]
@@ -210,6 +199,16 @@ onUnmounted(() => {
 
 .footer-bolt {
     color: var(--yellow);
+}
+
+.dashboard-hint {
+    color: var(--comment);
+    font-size: 12px;
+    text-align: center;
+}
+
+.hint-key {
+    color: var(--orange);
 }
 
 @media (max-width: 767px) {

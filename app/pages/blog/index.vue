@@ -58,6 +58,8 @@
                 <span class="summary-text">{{ filteredPosts?.length ?? 0 }} posts</span>
                 <span v-if="activeTag" class="summary-filter"> (filtered: {{ activeTag }})</span>
             </div>
+
+            <ContentNavHint />
         </div>
     </EditorContent>
 </template>

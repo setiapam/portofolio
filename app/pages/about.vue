@@ -75,6 +75,8 @@
                     <div class="blank-line">&nbsp;</div>
                 </div>
             </div>
+
+            <ContentNavHint />
         </div>
     </EditorContent>
 </template>

@@ -84,6 +84,8 @@
                     <button class="reset-btn" @click="resetForm">Send another message</button>
                 </div>
             </div>
+
+            <ContentNavHint />
         </div>
     </EditorContent>
 </template>

@@ -46,6 +46,8 @@
             <template v-else>
                 <div class="error-msg">E484: Can't open file "{{ $route.params.slug }}.md"</div>
             </template>
+
+            <ContentNavHint />
         </div>
     </EditorContent>
 </template>

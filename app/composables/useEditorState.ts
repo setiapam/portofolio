@@ -19,6 +19,9 @@ const commandHistory = ref<string[]>([])
 
 const KEY_TIMEOUT = 500
 
+// Telescope open callback (set by layout)
+const telescopeOpen = ref<(() => void) | null>(null)
+
 // ── Export shared refs for all composables ──
 export function useSharedState() {
   return {
@@ -29,6 +32,7 @@ export function useSharedState() {
     commandMessage,
     commandHistory,
     KEY_TIMEOUT,
+    telescopeOpen,
   }
 }
 
@@ -61,6 +65,7 @@ export function getBufferFromRoute(path: string): Buffer {
     projects: '',
     blog: '',
     contact: '',
+    terminal: '',
     admin: '',
   }
   const icon = iconMap[segments[0] ?? ''] ?? ''

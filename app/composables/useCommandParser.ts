@@ -6,7 +6,7 @@ interface CommandDef {
 }
 
 export function useCommandParser() {
-  const { commandMessage, commandHistory, editorState } = useSharedState()
+  const { commandMessage, commandHistory, editorState, telescopeOpen } = useSharedState()
   const router = useRouter()
 
   const commands: CommandDef[] = [
@@ -71,8 +71,12 @@ export function useCommandParser() {
       aliases: ['Telescope'],
       description: 'Open fuzzy finder',
       execute: () => {
-        // Phase 4
-        setMessage('[Telescope] Not yet implemented')
+        if (telescopeOpen.value) {
+          telescopeOpen.value()
+          setMessage('')
+        } else {
+          setMessage('[Telescope] Not available')
+        }
       },
     },
     {
@@ -85,8 +89,12 @@ export function useCommandParser() {
           editorState.lineNumbers = !editorState.lineNumbers
           setMessage(editorState.lineNumbers ? 'number' : 'nonumber')
         } else if (parts[0] === 'theme' && parts[1]) {
-          // Phase 4
-          setMessage(`colorscheme ${parts[1]}`)
+          const { setTheme, themes } = useTheme()
+          if (setTheme(parts[1])) {
+            setMessage(`colorscheme ${parts[1]}`)
+          } else {
+            setMessage(`E185: Cannot find colorscheme '${parts[1]}'. Available: ${themes.join(', ')}`)
+          }
         } else {
           setMessage(`E518: Unknown option: ${parts[0]}`)
         }
@@ -99,11 +107,16 @@ export function useCommandParser() {
       execute: (args) => {
         const theme = args.trim()
         if (!theme) {
-          setMessage('solarized-osaka')
+          const { theme: current } = useTheme()
+          setMessage(current.value)
           return
         }
-        // Phase 4
-        setMessage(`colorscheme ${theme}`)
+        const { setTheme, themes } = useTheme()
+        if (setTheme(theme)) {
+          setMessage(`colorscheme ${theme}`)
+        } else {
+          setMessage(`E185: Cannot find colorscheme '${theme}'. Available: ${themes.join(', ')}`)
+        }
       },
     },
     {
@@ -119,8 +132,8 @@ export function useCommandParser() {
       aliases: ['term'],
       description: 'Open interactive terminal',
       execute: () => {
-        // Phase 4
-        setMessage('[Terminal] Not yet implemented')
+        router.push('/terminal')
+        setMessage('')
       },
     },
     {

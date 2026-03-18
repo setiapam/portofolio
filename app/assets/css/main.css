@@ -1,4 +1,6 @@
 @import './themes/solarized-osaka.css';
+@import './themes/catppuccin-mocha.css';
+@import './themes/gruvbox-dark.css';
 
 @tailwind base;
 @tailwind components;

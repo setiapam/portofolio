@@ -25,14 +25,23 @@
 
     <!-- CommandLine — full width bottom -->
     <EditorCommandLine />
+
+    <!-- Telescope overlay -->
+    <EditorTelescopeFinder ref="telescopeRef" />
   </div>
 </template>
 
 <script setup lang="ts">
 const { state, toggleSidebar } = useBufferManager()
 const { install, uninstall } = useVimMode()
+const { initTheme } = useTheme()
 
+const { telescopeOpen } = useSharedState()
+const telescopeRef = ref<{ open: () => void } | null>(null)
 const isMobile = ref(false)
+
+// Register telescope open in shared state
+telescopeOpen.value = () => telescopeRef.value?.open()
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768
@@ -42,6 +51,7 @@ onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
   install()
+  initTheme()
 
   if (isMobile.value) {
     state.sidebarOpen = false

@@ -1,5 +1,5 @@
 export function useVimMode() {
-  const { vimMode, keyBuffer, pendingKeys, editorState, KEY_TIMEOUT } = useSharedState()
+  const { vimMode, keyBuffer, pendingKeys, editorState, KEY_TIMEOUT, telescopeOpen } = useSharedState()
 
   const LINE_HEIGHT = 22
 
@@ -144,6 +144,11 @@ export function useVimMode() {
         break
       case '/':
         e.preventDefault()
+        if (telescopeOpen.value) telescopeOpen.value()
+        break
+      case 'Backspace':
+        e.preventDefault()
+        navigateTo('/')
         break
     }
   }

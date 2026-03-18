@@ -45,6 +45,8 @@
                 <span class="summary-text">{{ projects?.length ?? 0 }} files</span>
                 <span v-if="featuredCount > 0" class="summary-featured"> ({{ featuredCount }} featured)</span>
             </div>
+
+            <ContentNavHint />
         </div>
     </EditorContent>
 </template>
