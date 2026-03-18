@@ -6,31 +6,21 @@
                 <div class="telescope-header">
                     <span class="telescope-icon">󰈞</span>
                     <span class="telescope-title">Telescope</span>
-                    <span class="telescope-hint">j/k navigate · Enter select · Esc close</span>
+                    <span class="telescope-hint">Arrow key navigate · Enter select · Esc close</span>
                 </div>
 
                 <!-- Search input -->
                 <div class="telescope-input-row">
                     <span class="input-prefix">&gt; </span>
-                    <input
-                        ref="inputRef"
-                        v-model="query"
-                        class="telescope-input"
-                        placeholder="Search files, projects, blog posts..."
-                        @keydown="handleKeydown"
-                    />
+                    <input ref="inputRef" v-model="query" class="telescope-input"
+                        placeholder="Search files, projects, blog posts..." @keydown="handleKeydown" />
                 </div>
 
                 <!-- Results -->
                 <div class="telescope-results" ref="resultsRef">
-                    <div
-                        v-for="(result, i) in filteredResults"
-                        :key="result.path"
-                        class="telescope-result"
-                        :class="{ active: i === selectedIndex }"
-                        @click="selectResult(result)"
-                        @mouseenter="selectedIndex = i"
-                    >
+                    <div v-for="(result, i) in filteredResults" :key="result.path" class="telescope-result"
+                        :class="{ active: i === selectedIndex }" @click="selectResult(result)"
+                        @mouseenter="selectedIndex = i">
                         <span class="result-icon">{{ result.icon }}</span>
                         <span class="result-label">{{ result.label }}</span>
                         <span class="result-path">{{ result.path }}</span>

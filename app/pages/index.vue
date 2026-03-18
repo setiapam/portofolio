@@ -20,7 +20,8 @@
                 <span class="footer-bolt">&#x26A1;</span> Website loaded in {{ loadTime }}ms
             </div>
             <div class="dashboard-hint">
-                Press shortcut key to navigate · <span class="hint-key">/</span> search · <span class="hint-key">?</span> help · <span class="hint-key">:</span> command
+                Press shortcut key to navigate · <span class="hint-key">/</span> search · <span
+                    class="hint-key">?</span> help · <span class="hint-key">:</span> command
             </div>
         </div>
     </EditorContent>
@@ -136,7 +137,7 @@ onUnmounted(() => {
 }
 
 .ascii-header {
-    color: var(--cyan);
+    color: var(--blue);
     font-size: 14px;
     line-height: 1.3;
     text-align: center;
@@ -215,7 +216,7 @@ onUnmounted(() => {
     }
 
     .ascii-header {
-        font-size: 7px;
+        font-size: 10px;
         line-height: 1.2;
     }
 
