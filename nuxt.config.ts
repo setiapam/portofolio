@@ -29,6 +29,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     supabaseServiceKey: '',
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://murphi.my.id',
+    },
   },
 
   app: {
@@ -37,10 +40,22 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        { name: 'theme-color', content: '#001419' },
+        { name: 'author', content: 'Dimas Setia Pambudi' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ],
     },
+  },
+
+  routeRules: {
+    '/admin/**': {
+      robots: 'noindex, nofollow',
+    },
+  },
+
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://murphi.my.id',
   },
 })

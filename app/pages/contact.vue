@@ -208,7 +208,19 @@ onMounted(() => {
     })
 })
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+
 useHead({ title: 'Contact' })
+useSeoMeta({
+    description: 'Get in touch with Dimas Setia Pambudi. Send a message through the terminal-style contact form.',
+    ogTitle: 'Contact - Dimas Setia Pambudi',
+    ogDescription: 'Send a message through the interactive terminal-style contact form.',
+    ogUrl: `${siteUrl}/contact`,
+    ogType: 'website',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>

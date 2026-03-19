@@ -78,8 +78,36 @@ function formatDate(dateStr: string): string {
     return `${day}/${month}/${year}`
 }
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+const projectTitle = project.value?.title ?? 'Project'
+const projectDesc = project.value?.description ?? ''
+
+useHead({ title: projectTitle })
+useSeoMeta({
+    description: projectDesc,
+    ogTitle: `${projectTitle} - Dimas Setia Pambudi`,
+    ogDescription: projectDesc,
+    ogUrl: `${siteUrl}/projects/${route.params.slug}`,
+    ogType: 'article',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+})
 useHead({
-    title: project.value?.title ?? 'Project',
+    link: [{ rel: 'canonical', href: `${siteUrl}/projects/${route.params.slug}` }],
+    script: [{
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: projectTitle,
+            description: projectDesc,
+            url: `${siteUrl}/projects/${route.params.slug}`,
+            author: { '@type': 'Person', name: 'Dimas Setia Pambudi' },
+            ...(project.value?.github_url ? { codeRepository: project.value.github_url } : {}),
+            ...(project.value?.tech_stack?.length ? { keywords: project.value.tech_stack.join(', ') } : {}),
+        }),
+    }],
 })
 </script>
 

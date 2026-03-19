@@ -85,7 +85,19 @@ function estimateSize(content: string | null): string {
     return `${(bytes / 1024).toFixed(1)}K`
 }
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+
 useHead({ title: 'Projects' })
+useSeoMeta({
+    description: 'Browse portfolio projects by Dimas Setia Pambudi. Open source work, web apps, and more.',
+    ogTitle: 'Projects - Dimas Setia Pambudi',
+    ogDescription: 'Browse portfolio projects — open source work, web apps, and more.',
+    ogUrl: `${siteUrl}/projects`,
+    ogType: 'website',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>

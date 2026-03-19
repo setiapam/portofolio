@@ -123,6 +123,23 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', onDashboardKey, true)
 })
+
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+
+useHead({ title: 'Dimas Setia Pambudi - Software Developer' })
+useSeoMeta({
+    description: 'Portfolio website of Dimas Setia Pambudi — Software Developer. Built as an interactive Neovim simulator with Vim keybindings, buffer management, and terminal commands.',
+    ogTitle: 'Dimas Setia Pambudi - Software Developer',
+    ogDescription: 'Interactive Neovim-themed portfolio. Navigate with Vim keybindings, explore projects, read blog posts, and more.',
+    ogUrl: siteUrl,
+    ogType: 'website',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'Dimas Setia Pambudi - Software Developer',
+    twitterDescription: 'Interactive Neovim-themed portfolio. Navigate with Vim keybindings, explore projects, read blog posts, and more.',
+    twitterImage: `${siteUrl}/og-image.png`,
+})
 </script>
 
 <style scoped>

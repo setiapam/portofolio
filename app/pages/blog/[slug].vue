@@ -81,8 +81,40 @@ function formatDate(dateStr: string | null): string {
     return `${day}/${month}/${year}`
 }
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+const postTitle = post.value?.title ?? 'Blog Post'
+const postDesc = post.value?.excerpt ?? ''
+
+useHead({ title: postTitle })
+useSeoMeta({
+    description: postDesc,
+    ogTitle: `${postTitle} - Dimas Setia Pambudi`,
+    ogDescription: postDesc,
+    ogUrl: `${siteUrl}/blog/${route.params.slug}`,
+    ogType: 'article',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+    articlePublishedTime: post.value?.published_at ?? undefined,
+    articleModifiedTime: post.value?.updated_at ?? undefined,
+    articleTag: post.value?.tags ?? undefined,
+})
 useHead({
-    title: post.value?.title ?? 'Blog Post',
+    link: [{ rel: 'canonical', href: `${siteUrl}/blog/${route.params.slug}` }],
+    script: [{
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: postTitle,
+            description: postDesc,
+            url: `${siteUrl}/blog/${route.params.slug}`,
+            datePublished: post.value?.published_at,
+            dateModified: post.value?.updated_at,
+            author: { '@type': 'Person', name: 'Dimas Setia Pambudi' },
+            ...(post.value?.tags?.length ? { keywords: post.value.tags.join(', ') } : {}),
+        }),
+    }],
 })
 </script>
 

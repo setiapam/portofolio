@@ -141,8 +141,38 @@ function formatDate(dateStr: string | null | undefined): string {
     return `${day}/${month}/${year}`
 }
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+const profileName = profile.value?.name ?? 'Developer'
+const profileTitle = profile.value?.title ?? 'Software Engineer'
+const bioText = profile.value?.bio?.replace(/[#*`\n]/g, ' ').slice(0, 160) ?? ''
+
 useHead({
-    title: `${profile.value?.name ?? 'About'} - About`,
+    title: `${profileName} - About`,
+})
+useSeoMeta({
+    description: `${profileName} — ${profileTitle}. ${bioText}`,
+    ogTitle: `${profileName} - About`,
+    ogDescription: `${profileName} — ${profileTitle}. Skills, experience, and background.`,
+    ogUrl: `${siteUrl}/about`,
+    ogType: 'profile',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+})
+useHead({
+    script: [{
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: profileName,
+            jobTitle: profileTitle,
+            description: bioText,
+            url: siteUrl,
+            email: profile.value?.email ?? undefined,
+            sameAs: [profile.value?.github_url, profile.value?.linkedin_url].filter(Boolean),
+        }),
+    }],
 })
 </script>
 

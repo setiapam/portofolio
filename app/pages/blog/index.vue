@@ -107,7 +107,19 @@ function toggleTag(tag: string) {
     activeTag.value = activeTag.value === tag ? null : tag
 }
 
+const config = useRuntimeConfig()
+const siteUrl = config.public.siteUrl as string
+
 useHead({ title: 'Blog' })
+useSeoMeta({
+    description: 'Blog posts by Dimas Setia Pambudi about software development, web technologies, and more.',
+    ogTitle: 'Blog - Dimas Setia Pambudi',
+    ogDescription: 'Blog posts about software development, web technologies, and more.',
+    ogUrl: `${siteUrl}/blog`,
+    ogType: 'website',
+    ogImage: `${siteUrl}/og-image.png`,
+    twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>

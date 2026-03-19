@@ -239,7 +239,10 @@ onMounted(() => {
     nextTick(() => inputRef.value?.focus())
 })
 
-useHead({ title: 'Terminal' })
+useHead({
+    title: 'Terminal',
+    meta: [{ name: 'robots', content: 'noindex' }],
+})
 </script>
 
 <style scoped>
