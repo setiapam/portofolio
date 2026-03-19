@@ -21,15 +21,9 @@
                 <div v-if="currentStep < steps.length && !submitted" class="prompt-line current">
                     <span class="prompt">$ </span>
                     <span class="prompt-label">{{ steps[currentStep]?.label }}: </span>
-                    <input
-                        ref="inputRef"
-                        v-model="currentInput"
-                        class="prompt-input"
-                        :type="steps[currentStep]?.type ?? 'text'"
-                        :placeholder="steps[currentStep]?.placeholder"
-                        @keydown.enter="submitStep"
-                        @keydown.escape="handleEscape"
-                    />
+                    <input ref="inputRef" v-model="currentInput" class="prompt-input"
+                        :type="steps[currentStep]?.type ?? 'text'" :placeholder="steps[currentStep]?.placeholder"
+                        @keydown.enter="submitStep" @keydown.escape="handleEscape" />
                 </div>
 
                 <!-- Message textarea (special step) -->
@@ -38,17 +32,14 @@
                     <span class="prompt-label">Message:</span>
                     <div class="message-input-wrapper">
                         <span class="message-prefix">&gt; </span>
-                        <textarea
-                            ref="textareaRef"
-                            v-model="messageInput"
-                            class="message-input"
-                            rows="4"
-                            placeholder="Type your message... (Enter to send)"
-                            @keydown.ctrl.enter="submitMessage"
-                            @keydown.escape="handleEscape"
-                        ></textarea>
+                        <textarea ref="textareaRef" v-model="messageInput" class="message-input" rows="4"
+                            placeholder="Type your message... (Enter to send)" @keydown.ctrl.enter="submitMessage"
+                            @keydown.escape="handleEscape"></textarea>
                     </div>
-                    <div class="message-hint">Press Ctrl+Enter to send</div>
+                    <div class="message-actions">
+                        <span class="message-hint">Press Ctrl+Enter to send</span>
+                        <button class="btn-send" @click="submitMessage">Send</button>
+                    </div>
                 </div>
 
                 <!-- Sending state -->
@@ -316,11 +307,32 @@ useHead({ title: 'Contact' })
     color: var(--comment);
 }
 
+.message-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 4px;
+}
+
 .message-hint {
     color: var(--comment);
     font-size: 12px;
-    margin-top: 2px;
-    width: 100%;
+}
+
+.btn-send {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--bg);
+    background: var(--green);
+    border: none;
+    padding: 4px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.btn-send:hover {
+    opacity: 0.9;
 }
 
 .sending-text {

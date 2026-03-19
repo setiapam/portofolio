@@ -1,7 +1,7 @@
 <template>
     <EditorContent>
         <div class="admin-page">
-            <div class="file-comment">-- admin/profile.vue [INSERT]</div>
+            <div class="file-comment">-- admin/profile.md [INSERT]</div>
             <div class="blank-line">&nbsp;</div>
 
             <div v-if="profile" class="form-fields">
@@ -116,11 +116,23 @@ useHead({ title: 'Admin - Profile' })
 </script>
 
 <style scoped>
-.admin-page { padding: 8px 16px; line-height: 22px; }
-.file-comment { color: var(--comment); font-style: italic; }
-.blank-line { height: 22px; }
+.admin-page {
+    padding: 8px 16px;
+    line-height: 22px;
+}
 
-.form-fields { max-width: 800px; }
+.file-comment {
+    color: var(--comment);
+    font-style: italic;
+}
+
+.blank-line {
+    height: 22px;
+}
+
+.form-fields {
+    max-width: 800px;
+}
 
 .field {
     display: flex;
@@ -148,7 +160,9 @@ useHead({ title: 'Admin - Profile' })
     caret-color: var(--green);
 }
 
-.field-input:focus { border-color: var(--blue); }
+.field-input:focus {
+    border-color: var(--blue);
+}
 
 .ascii-textarea {
     width: 100%;
@@ -181,9 +195,21 @@ useHead({ title: 'Admin - Profile' })
     border-radius: 2px;
 }
 
-.btn-save:hover { opacity: 0.9; }
+.btn-save:hover {
+    opacity: 0.9;
+}
 
-.msg-success { color: var(--green); font-size: 13px; }
-.msg-error { color: var(--red); font-size: 13px; }
-.loading { color: var(--comment); }
+.msg-success {
+    color: var(--green);
+    font-size: 13px;
+}
+
+.msg-error {
+    color: var(--red);
+    font-size: 13px;
+}
+
+.loading {
+    color: var(--comment);
+}
 </style>

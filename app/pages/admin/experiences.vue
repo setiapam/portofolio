@@ -1,22 +1,15 @@
 <template>
     <EditorContent>
         <div class="admin-page">
-            <div class="file-comment">-- admin/experiences.vue</div>
+            <div class="file-comment">-- admin/experiences.md</div>
             <div class="blank-line">&nbsp;</div>
 
             <div class="split-view">
                 <!-- Left: list -->
                 <div class="list-pane">
-                    <AdminDataTable
-                        title="Experiences"
-                        :rows="experiences ?? []"
-                        label-field="company"
-                        date-field="start_date"
-                        :selected-id="editing?.id"
-                        @create="createNew"
-                        @select="selectItem"
-                        @delete="deleteItem"
-                    />
+                    <AdminDataTable title="Experiences" :rows="experiences ?? []" label-field="company"
+                        date-field="start_date" :selected-id="editing?.id" @create="createNew" @select="selectItem"
+                        @delete="deleteItem" />
                 </div>
 
                 <!-- Right: editor -->
@@ -35,8 +28,10 @@
                     </div>
                     <div class="field">
                         <label class="field-label">end_date:</label>
-                        <input v-model="endDateDisplay" class="field-input" placeholder="dd/mm/yyyy (kosongkan untuk present)" />
-                        <button v-if="editing.end_date" class="btn-clear" @click="editing.end_date = null" title="Set as present">present</button>
+                        <input v-model="endDateDisplay" class="field-input"
+                            placeholder="dd/mm/yyyy (kosongkan untuk present)" />
+                        <button v-if="editing.end_date" class="btn-clear" @click="editing.end_date = null"
+                            title="Set as present">present</button>
                     </div>
                     <div class="field">
                         <label class="field-label">tech_stack:</label>
@@ -194,43 +189,131 @@ useHead({ title: 'Admin - Experiences' })
 </script>
 
 <style scoped>
-.admin-page { padding: 8px 16px; line-height: 22px; }
-.file-comment { color: var(--comment); font-style: italic; }
-.blank-line { height: 22px; }
-
-.split-view { display: flex; gap: 16px; height: calc(100vh - 200px); }
-.list-pane { width: 320px; flex-shrink: 0; overflow-y: auto; }
-.edit-pane { flex: 1; overflow-y: auto; }
-.edit-pane.empty { color: var(--comment); font-style: italic; display: flex; align-items: center; justify-content: center; }
-
-.field { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.field-label { color: var(--cyan); min-width: 110px; flex-shrink: 0; font-size: 13px; }
-.field-input {
-    flex: 1; font-family: var(--font-mono); font-size: 14px;
-    color: var(--fg); background: var(--bg-highlight); border: 1px solid var(--bg-visual);
-    padding: 4px 8px; outline: none; caret-color: var(--green);
+.admin-page {
+    padding: 8px 16px;
+    line-height: 22px;
 }
-.field-input:focus { border-color: var(--blue); }
+
+.file-comment {
+    color: var(--comment);
+    font-style: italic;
+}
+
+.blank-line {
+    height: 22px;
+}
+
+.split-view {
+    display: flex;
+    gap: 16px;
+    height: calc(100vh - 200px);
+}
+
+.list-pane {
+    width: 320px;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.edit-pane {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.edit-pane.empty {
+    color: var(--comment);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.field-label {
+    color: var(--cyan);
+    min-width: 110px;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+.field-input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--fg);
+    background: var(--bg-highlight);
+    border: 1px solid var(--bg-visual);
+    padding: 4px 8px;
+    outline: none;
+    caret-color: var(--green);
+}
+
+.field-input:focus {
+    border-color: var(--blue);
+}
 
 .btn-clear {
-    font-family: var(--font-mono); font-size: 12px;
-    color: var(--yellow); background: transparent; border: 1px solid var(--yellow);
-    padding: 2px 8px; cursor: pointer; border-radius: 2px; flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--yellow);
+    background: transparent;
+    border: 1px solid var(--yellow);
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    flex-shrink: 0;
 }
-.btn-clear:hover { background: var(--yellow); color: var(--bg); }
 
-.actions { display: flex; gap: 12px; align-items: center; }
-.btn-save {
-    font-family: var(--font-mono); font-size: 13px;
-    color: var(--bg); background: var(--green); border: none;
-    padding: 4px 16px; cursor: pointer; border-radius: 2px;
+.btn-clear:hover {
+    background: var(--yellow);
+    color: var(--bg);
 }
-.btn-save:hover { opacity: 0.9; }
-.msg-success { color: var(--green); font-size: 13px; }
-.msg-error { color: var(--red); font-size: 13px; }
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-save {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--bg);
+    background: var(--green);
+    border: none;
+    padding: 4px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.btn-save:hover {
+    opacity: 0.9;
+}
+
+.msg-success {
+    color: var(--green);
+    font-size: 13px;
+}
+
+.msg-error {
+    color: var(--red);
+    font-size: 13px;
+}
 
 @media (max-width: 767px) {
-    .split-view { flex-direction: column; height: auto; }
-    .list-pane { width: 100%; }
+    .split-view {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .list-pane {
+        width: 100%;
+    }
 }
 </style>

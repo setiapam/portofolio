@@ -1,7 +1,7 @@
 <template>
     <EditorContent>
         <div class="admin-page">
-            <div class="file-comment">-- admin/messages.vue</div>
+            <div class="file-comment">-- admin/messages.md</div>
             <div class="blank-line">&nbsp;</div>
 
             <div class="heading"># Messages</div>
@@ -65,11 +65,30 @@ useHead({ title: 'Admin - Messages' })
 </script>
 
 <style scoped>
-.admin-page { padding: 8px 16px; line-height: 22px; }
-.file-comment { color: var(--comment); font-style: italic; }
-.blank-line { height: 22px; }
-.heading { color: var(--blue); font-weight: bold; font-size: 16px; }
-.empty { color: var(--comment); font-style: italic; }
+.admin-page {
+    padding: 8px 16px;
+    line-height: 22px;
+}
+
+.file-comment {
+    color: var(--comment);
+    font-style: italic;
+}
+
+.blank-line {
+    height: 22px;
+}
+
+.heading {
+    color: var(--blue);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.empty {
+    color: var(--comment);
+    font-style: italic;
+}
 
 .message-card {
     border: 1px solid var(--bg-highlight);
@@ -88,12 +107,41 @@ useHead({ title: 'Admin - Messages' })
     flex-wrap: wrap;
 }
 
-.msg-from { color: var(--cyan); font-weight: bold; }
-.msg-email { color: var(--comment); font-size: 12px; }
-.msg-date { color: var(--comment); font-size: 12px; margin-left: auto; }
-.msg-badge { color: var(--bg); background: var(--yellow); font-size: 10px; padding: 0 4px; border-radius: 2px; }
-.msg-subject { color: var(--yellow); font-size: 13px; margin-top: 4px; }
-.msg-body { color: var(--fg); margin-top: 4px; white-space: pre-wrap; }
+.msg-from {
+    color: var(--cyan);
+    font-weight: bold;
+}
+
+.msg-email {
+    color: var(--comment);
+    font-size: 12px;
+}
+
+.msg-date {
+    color: var(--comment);
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.msg-badge {
+    color: var(--bg);
+    background: var(--yellow);
+    font-size: 10px;
+    padding: 0 4px;
+    border-radius: 2px;
+}
+
+.msg-subject {
+    color: var(--yellow);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.msg-body {
+    color: var(--fg);
+    margin-top: 4px;
+    white-space: pre-wrap;
+}
 
 .msg-actions {
     display: flex;
@@ -101,7 +149,8 @@ useHead({ title: 'Admin - Messages' })
     margin-top: 8px;
 }
 
-.btn-read, .btn-delete {
+.btn-read,
+.btn-delete {
     font-family: var(--font-mono);
     font-size: 12px;
     background: transparent;
@@ -111,8 +160,23 @@ useHead({ title: 'Admin - Messages' })
     border-radius: 2px;
 }
 
-.btn-read { color: var(--green); border-color: var(--green); }
-.btn-read:hover { background: var(--green); color: var(--bg); }
-.btn-delete { color: var(--red); border-color: var(--red); }
-.btn-delete:hover { background: var(--red); color: var(--bg); }
+.btn-read {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.btn-read:hover {
+    background: var(--green);
+    color: var(--bg);
+}
+
+.btn-delete {
+    color: var(--red);
+    border-color: var(--red);
+}
+
+.btn-delete:hover {
+    background: var(--red);
+    color: var(--bg);
+}
 </style>

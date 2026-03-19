@@ -1,23 +1,15 @@
 <template>
     <EditorContent>
         <div class="admin-page">
-            <div class="file-comment">-- admin/skills.vue</div>
+            <div class="file-comment">-- admin/skills.md</div>
             <div class="blank-line">&nbsp;</div>
 
             <div class="split-view">
                 <!-- Left: list -->
                 <div class="list-pane">
-                    <AdminDataTable
-                        title="Skills"
-                        :rows="skills ?? []"
-                        label-field="name"
-                        status-field="category"
-                        date-field=""
-                        :selected-id="editing?.id"
-                        @create="createNew"
-                        @select="selectItem"
-                        @delete="deleteItem"
-                    />
+                    <AdminDataTable title="Skills" :rows="skills ?? []" label-field="name" status-field="category"
+                        date-field="" :selected-id="editing?.id" @create="createNew" @select="selectItem"
+                        @delete="deleteItem" />
                 </div>
 
                 <!-- Right: editor -->
@@ -171,46 +163,142 @@ useHead({ title: 'Admin - Skills' })
 </script>
 
 <style scoped>
-.admin-page { padding: 8px 16px; line-height: 22px; }
-.file-comment { color: var(--comment); font-style: italic; }
-.blank-line { height: 22px; }
-
-.split-view { display: flex; gap: 16px; height: calc(100vh - 200px); }
-.list-pane { width: 320px; flex-shrink: 0; overflow-y: auto; }
-.edit-pane { flex: 1; overflow-y: auto; }
-.edit-pane.empty { color: var(--comment); font-style: italic; display: flex; align-items: center; justify-content: center; }
-
-.field { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.field-label { color: var(--cyan); min-width: 110px; flex-shrink: 0; font-size: 13px; }
-.field-input {
-    flex: 1; font-family: var(--font-mono); font-size: 14px;
-    color: var(--fg); background: var(--bg-highlight); border: 1px solid var(--bg-visual);
-    padding: 4px 8px; outline: none; caret-color: var(--green);
+.admin-page {
+    padding: 8px 16px;
+    line-height: 22px;
 }
-.field-input:focus { border-color: var(--blue); }
 
-.skill-preview {
-    display: flex; align-items: center; gap: 12px;
-    padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--bg-highlight);
+.file-comment {
+    color: var(--comment);
+    font-style: italic;
+}
+
+.blank-line {
+    height: 22px;
+}
+
+.split-view {
+    display: flex;
+    gap: 16px;
+    height: calc(100vh - 200px);
+}
+
+.list-pane {
+    width: 320px;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.edit-pane {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.edit-pane.empty {
+    color: var(--comment);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.field-label {
+    color: var(--cyan);
+    min-width: 110px;
+    flex-shrink: 0;
     font-size: 13px;
 }
-.preview-label { color: var(--comment); }
-.preview-name { color: var(--cyan); }
-.preview-bar { color: var(--green); font-family: var(--font-mono); }
-.preview-category { color: var(--comment); font-style: italic; }
 
-.actions { display: flex; gap: 12px; align-items: center; }
-.btn-save {
-    font-family: var(--font-mono); font-size: 13px;
-    color: var(--bg); background: var(--green); border: none;
-    padding: 4px 16px; cursor: pointer; border-radius: 2px;
+.field-input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--fg);
+    background: var(--bg-highlight);
+    border: 1px solid var(--bg-visual);
+    padding: 4px 8px;
+    outline: none;
+    caret-color: var(--green);
 }
-.btn-save:hover { opacity: 0.9; }
-.msg-success { color: var(--green); font-size: 13px; }
-.msg-error { color: var(--red); font-size: 13px; }
+
+.field-input:focus {
+    border-color: var(--blue);
+}
+
+.skill-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--bg-dark);
+    border: 1px solid var(--bg-highlight);
+    font-size: 13px;
+}
+
+.preview-label {
+    color: var(--comment);
+}
+
+.preview-name {
+    color: var(--cyan);
+}
+
+.preview-bar {
+    color: var(--green);
+    font-family: var(--font-mono);
+}
+
+.preview-category {
+    color: var(--comment);
+    font-style: italic;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-save {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--bg);
+    background: var(--green);
+    border: none;
+    padding: 4px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.btn-save:hover {
+    opacity: 0.9;
+}
+
+.msg-success {
+    color: var(--green);
+    font-size: 13px;
+}
+
+.msg-error {
+    color: var(--red);
+    font-size: 13px;
+}
 
 @media (max-width: 767px) {
-    .split-view { flex-direction: column; height: auto; }
-    .list-pane { width: 100%; }
+    .split-view {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .list-pane {
+        width: 100%;
+    }
 }
 </style>
