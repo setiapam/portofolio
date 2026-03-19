@@ -24,6 +24,16 @@
                     <span class="item-label">Blog</span>
                     <span class="item-desc">Manage blog posts</span>
                 </NuxtLink>
+                <NuxtLink to="/admin/skills" class="admin-item">
+                    <span class="item-icon"></span>
+                    <span class="item-label">Skills</span>
+                    <span class="item-desc">Manage skills & proficiency</span>
+                </NuxtLink>
+                <NuxtLink to="/admin/experiences" class="admin-item">
+                    <span class="item-icon"></span>
+                    <span class="item-label">Experiences</span>
+                    <span class="item-desc">Manage work experience</span>
+                </NuxtLink>
                 <NuxtLink to="/admin/messages" class="admin-item">
                     <span class="item-icon"></span>
                     <span class="item-label">Messages</span>

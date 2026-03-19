@@ -43,7 +43,11 @@ defineEmits<{
 
 function formatDate(val: any): string {
     if (!val) return ''
-    return new Date(val).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+    const d = new Date(val)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 </script>
 

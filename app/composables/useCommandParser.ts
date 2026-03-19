@@ -78,6 +78,8 @@ export function useCommandParser() {
           projects: '/admin/projects',
           blog: '/admin/blog',
           profile: '/admin/profile',
+          skills: '/admin/skills',
+          experiences: '/admin/experiences',
           messages: '/admin/messages',
         }
         const target = routes[section]

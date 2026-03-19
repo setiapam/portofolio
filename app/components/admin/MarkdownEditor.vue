@@ -17,7 +17,7 @@
             <div class="pane-header">
                 <span class="pane-title">Preview</span>
             </div>
-            <div class="preview-content" v-html="renderedHtml"></div>
+            <div class="preview-content markdown-body" v-html="renderedHtml"></div>
         </div>
     </div>
 </template>
@@ -33,19 +33,9 @@ defineEmits<{
 }>()
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
+const { renderMarkdown } = useMarkdown()
 
-const renderedHtml = computed(() => {
-    return (props.modelValue ?? '')
-        .replace(/^### (.*$)/gm, '<h3 style="color:var(--green);font-weight:bold">$1</h3>')
-        .replace(/^## (.*$)/gm, '<h2 style="color:var(--cyan);font-weight:bold">$1</h2>')
-        .replace(/^# (.*$)/gm, '<h1 style="color:var(--blue);font-weight:bold;font-size:16px">$1</h1>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code style="color:var(--green);background:var(--bg-highlight);padding:1px 4px;border-radius:2px">$1</code>')
-        .replace(/^\- (.*$)/gm, '<div style="padding-left:16px">• $1</div>')
-        .replace(/\n\n/g, '<div style="height:22px"></div>')
-        .replace(/\n/g, '<br>')
-})
+const renderedHtml = computed(() => renderMarkdown(props.modelValue))
 
 defineExpose({ textareaRef })
 </script>
@@ -101,6 +91,29 @@ defineExpose({ textareaRef })
     font-size: 14px;
     line-height: 22px;
 }
+
+.preview-content :deep(h1) { color: var(--blue); font-weight: bold; font-size: 16px; margin: 8px 0 4px; }
+.preview-content :deep(h2) { color: var(--cyan); font-weight: bold; margin: 8px 0 4px; }
+.preview-content :deep(h3) { color: var(--green); font-weight: bold; margin: 8px 0 4px; }
+.preview-content :deep(h4) { color: var(--yellow); font-weight: bold; margin: 4px 0; }
+.preview-content :deep(code) { color: var(--green); background: var(--bg-highlight); padding: 1px 4px; border-radius: 2px; }
+.preview-content :deep(pre) { background: var(--bg-highlight); padding: 12px; border-radius: 4px; overflow-x: auto; margin: 8px 0; }
+.preview-content :deep(pre code) { background: none; padding: 0; }
+.preview-content :deep(ul) { padding-left: 24px; margin: 4px 0; list-style: disc; }
+.preview-content :deep(ol) { padding-left: 24px; margin: 4px 0; list-style: decimal; }
+.preview-content :deep(ul ul) { list-style: circle; }
+.preview-content :deep(ul ul ul) { list-style: square; }
+.preview-content :deep(li) { margin: 2px 0; }
+.preview-content :deep(blockquote) { border-left: 3px solid var(--cyan); padding-left: 12px; color: var(--comment); margin: 8px 0; }
+.preview-content :deep(a) { color: var(--cyan); text-decoration: none; }
+.preview-content :deep(a:hover) { text-decoration: underline; }
+.preview-content :deep(hr) { border: none; border-top: 1px solid var(--bg-visual); margin: 12px 0; }
+.preview-content :deep(table) { border-collapse: collapse; width: 100%; margin: 8px 0; }
+.preview-content :deep(th), .preview-content :deep(td) { border: 1px solid var(--bg-visual); padding: 4px 8px; text-align: left; }
+.preview-content :deep(th) { background: var(--bg-highlight); color: var(--cyan); }
+.preview-content :deep(strong) { color: var(--yellow); }
+.preview-content :deep(em) { color: var(--purple); font-style: italic; }
+.preview-content :deep(p) { margin: 4px 0; }
 
 @media (max-width: 767px) {
     .markdown-editor {

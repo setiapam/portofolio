@@ -74,6 +74,8 @@ const adminPages: SearchResult[] = [
     { label: 'admin/profile', path: '/admin/profile', icon: '', type: 'admin' },
     { label: 'admin/projects', path: '/admin/projects', icon: '', type: 'admin' },
     { label: 'admin/blog', path: '/admin/blog', icon: '', type: 'admin' },
+    { label: 'admin/skills', path: '/admin/skills', icon: '', type: 'admin' },
+    { label: 'admin/experiences', path: '/admin/experiences', icon: '', type: 'admin' },
     { label: 'admin/messages', path: '/admin/messages', icon: '', type: 'admin' },
 ]
 

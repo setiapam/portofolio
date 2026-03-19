@@ -11,7 +11,7 @@
                 <div class="heading"># {{ profile?.name ?? 'Developer' }}</div>
                 <div class="subheading">## {{ profile?.title ?? 'Software Engineer' }}</div>
                 <div class="blank-line">&nbsp;</div>
-                <div v-if="profile?.bio" class="bio" v-html="renderMarkdown(profile.bio)"></div>
+                <div v-if="profile?.bio" class="bio markdown-body" v-html="renderMarkdown(profile.bio)"></div>
                 <div class="blank-line">&nbsp;</div>
 
                 <!-- Links -->
@@ -67,7 +67,7 @@
                     <div class="exp-dates">
                         {{ formatDate(exp.start_date) }} - {{ exp.end_date ? formatDate(exp.end_date) : 'Present' }}
                     </div>
-                    <div v-if="exp.description" class="exp-desc" v-html="renderMarkdown(exp.description)"></div>
+                    <div v-if="exp.description" class="exp-desc markdown-body" v-html="renderMarkdown(exp.description)"></div>
                     <div v-if="exp.tech_stack?.length" class="exp-tech">
                         <span class="tech-label">stack: </span>
                         <span v-for="(tech, i) in exp.tech_stack" :key="tech" class="tech-tag">{{ tech }}<span v-if="i < exp.tech_stack.length - 1">, </span></span>
@@ -130,18 +130,15 @@ function getSkillBar(level: number): string {
     return `[${filled}${empty}]`
 }
 
+const { renderMarkdown } = useMarkdown()
+
 function formatDate(dateStr: string | null | undefined): string {
     if (!dateStr) return ''
     const d = new Date(dateStr)
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
-}
-
-function renderMarkdown(text: string): string {
-    return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/\n/g, '<br>')
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 
 useHead({
@@ -179,12 +176,25 @@ useHead({
     color: var(--fg);
 }
 
-.bio :deep(code) {
-    color: var(--green);
-    background: var(--bg-highlight);
-    padding: 1px 4px;
-    border-radius: 2px;
-}
+.markdown-body :deep(h1) { color: var(--blue); font-weight: bold; font-size: 16px; margin: 8px 0 4px; }
+.markdown-body :deep(h2) { color: var(--cyan); font-weight: bold; margin: 8px 0 4px; }
+.markdown-body :deep(h3) { color: var(--green); font-weight: bold; margin: 8px 0 4px; }
+.markdown-body :deep(h4) { color: var(--yellow); font-weight: bold; margin: 4px 0; }
+.markdown-body :deep(code) { color: var(--green); background: var(--bg-highlight); padding: 1px 4px; border-radius: 2px; }
+.markdown-body :deep(pre) { background: var(--bg-highlight); padding: 12px; border-radius: 4px; overflow-x: auto; margin: 8px 0; }
+.markdown-body :deep(pre code) { background: none; padding: 0; }
+.markdown-body :deep(ul) { padding-left: 24px; margin: 4px 0; list-style: disc; }
+.markdown-body :deep(ol) { padding-left: 24px; margin: 4px 0; list-style: decimal; }
+.markdown-body :deep(ul ul) { list-style: circle; }
+.markdown-body :deep(ul ul ul) { list-style: square; }
+.markdown-body :deep(li) { margin: 2px 0; }
+.markdown-body :deep(blockquote) { border-left: 3px solid var(--cyan); padding-left: 12px; color: var(--comment); margin: 8px 0; }
+.markdown-body :deep(a) { color: var(--cyan); text-decoration: none; }
+.markdown-body :deep(a:hover) { text-decoration: underline; }
+.markdown-body :deep(hr) { border: none; border-top: 1px solid var(--bg-visual); margin: 12px 0; }
+.markdown-body :deep(strong) { color: var(--yellow); }
+.markdown-body :deep(em) { color: var(--purple); font-style: italic; }
+.markdown-body :deep(p) { margin: 4px 0; }
 
 .info-line {
     display: flex;
@@ -260,10 +270,6 @@ useHead({
 .exp-desc {
     color: var(--fg);
     padding-left: 8px;
-}
-
-.exp-desc :deep(code) {
-    color: var(--green);
 }
 
 .exp-tech {

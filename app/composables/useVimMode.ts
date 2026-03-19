@@ -67,6 +67,9 @@ export function useVimMode() {
       resetKeyBuffer()
     }
 
+    // Ignore modifier-only keys so they don't pollute the key buffer
+    if (['Shift', 'Control', 'Alt', 'Meta'].includes(e.key)) return
+
     if (e.ctrlKey) {
       if (e.key === 'b') {
         e.preventDefault()

@@ -37,7 +37,7 @@
                 <div class="blank-line">&nbsp;</div>
 
                 <!-- Content -->
-                <div v-if="project.content" class="content-body" v-html="renderMarkdown(project.content)"></div>
+                <div v-if="project.content" class="content-body markdown-body" v-html="renderMarkdown(project.content)"></div>
                 <div v-else class="empty-content">
                     (no content yet)
                 </div>
@@ -68,22 +68,14 @@ const { data: project } = await useAsyncData(`project-${route.params.slug}`, asy
     return data as Project | null
 })
 
+const { renderMarkdown } = useMarkdown()
+
 function formatDate(dateStr: string): string {
     const d = new Date(dateStr)
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
-
-function renderMarkdown(text: string): string {
-    return text
-        .replace(/^### (.*$)/gm, '<h3 class="md-h3">$1</h3>')
-        .replace(/^## (.*$)/gm, '<h2 class="md-h2">$1</h2>')
-        .replace(/^# (.*$)/gm, '<h1 class="md-h1">$1</h1>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code class="md-code">$1</code>')
-        .replace(/^\- (.*$)/gm, '<div class="md-list-item">• $1</div>')
-        .replace(/\n\n/g, '<div class="md-break"></div>')
-        .replace(/\n/g, '<br>')
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 
 useHead({
@@ -153,39 +145,28 @@ useHead({
     color: var(--fg);
 }
 
-.content-body :deep(.md-h1) {
-    color: var(--blue);
-    font-weight: bold;
-    font-size: 16px;
-    margin: 0;
-}
-
-.content-body :deep(.md-h2) {
-    color: var(--cyan);
-    font-weight: bold;
-    margin: 0;
-}
-
-.content-body :deep(.md-h3) {
-    color: var(--green);
-    font-weight: bold;
-    margin: 0;
-}
-
-.content-body :deep(.md-code) {
-    color: var(--green);
-    background: var(--bg-highlight);
-    padding: 1px 4px;
-    border-radius: 2px;
-}
-
-.content-body :deep(.md-list-item) {
-    padding-left: 16px;
-}
-
-.content-body :deep(.md-break) {
-    height: 22px;
-}
+.content-body :deep(h1) { color: var(--blue); font-weight: bold; font-size: 16px; margin: 8px 0 4px; }
+.content-body :deep(h2) { color: var(--cyan); font-weight: bold; margin: 8px 0 4px; }
+.content-body :deep(h3) { color: var(--green); font-weight: bold; margin: 8px 0 4px; }
+.content-body :deep(h4) { color: var(--yellow); font-weight: bold; margin: 4px 0; }
+.content-body :deep(code) { color: var(--green); background: var(--bg-highlight); padding: 1px 4px; border-radius: 2px; }
+.content-body :deep(pre) { background: var(--bg-highlight); padding: 12px; border-radius: 4px; overflow-x: auto; margin: 8px 0; }
+.content-body :deep(pre code) { background: none; padding: 0; }
+.content-body :deep(ul) { padding-left: 24px; margin: 4px 0; list-style: disc; }
+.content-body :deep(ol) { padding-left: 24px; margin: 4px 0; list-style: decimal; }
+.content-body :deep(ul ul) { list-style: circle; }
+.content-body :deep(ul ul ul) { list-style: square; }
+.content-body :deep(li) { margin: 2px 0; }
+.content-body :deep(blockquote) { border-left: 3px solid var(--cyan); padding-left: 12px; color: var(--comment); margin: 8px 0; }
+.content-body :deep(a) { color: var(--cyan); text-decoration: none; }
+.content-body :deep(a:hover) { text-decoration: underline; }
+.content-body :deep(hr) { border: none; border-top: 1px solid var(--bg-visual); margin: 12px 0; }
+.content-body :deep(table) { border-collapse: collapse; width: 100%; margin: 8px 0; }
+.content-body :deep(th), .content-body :deep(td) { border: 1px solid var(--bg-visual); padding: 4px 8px; text-align: left; }
+.content-body :deep(th) { background: var(--bg-highlight); color: var(--cyan); }
+.content-body :deep(strong) { color: var(--yellow); }
+.content-body :deep(em) { color: var(--purple); font-style: italic; }
+.content-body :deep(p) { margin: 4px 0; }
 
 .empty-content {
     color: var(--comment);

@@ -65,13 +65,17 @@ const { data: projects } = await useAsyncData('projects-list', async () => {
     return (data ?? []) as Pick<Project, 'slug' | 'title' | 'description' | 'tech_stack' | 'featured' | 'content' | 'updated_at'>[]
 })
 
-const today = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+const now = new Date()
+const today = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`
 
 const featuredCount = computed(() => projects.value?.filter(p => p.featured).length ?? 0)
 
 function formatDate(dateStr: string): string {
     const d = new Date(dateStr)
-    return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 
 function estimateSize(content: string | null): string {

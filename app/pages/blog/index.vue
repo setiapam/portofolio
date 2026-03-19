@@ -91,12 +91,16 @@ const filteredPosts = computed(() => {
     return posts.value?.filter(p => p.tags?.includes(activeTag.value!))
 })
 
-const today = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+const now = new Date()
+const today = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`
 
 function formatDate(dateStr: string | null): string {
     if (!dateStr) return '-'
     const d = new Date(dateStr)
-    return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 
 function toggleTag(tag: string) {
