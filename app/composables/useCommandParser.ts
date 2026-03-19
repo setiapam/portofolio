@@ -241,9 +241,53 @@ export function useCommandParser() {
     }
   }
 
+  // Sub-command completions for commands that accept arguments
+  const subCompletions: Record<string, () => string[]> = {
+    admin: () => ['projects', 'blog', 'profile', 'skills', 'experiences', 'messages'],
+    colorscheme: () => [...useTheme().themes],
+    set: () => ['number', 'theme'],
+    'set theme': () => [...useTheme().themes],
+    e: () => ['about', 'projects', 'blog', 'contact', 'terminal', 'dashboard'],
+    edit: () => ['about', 'projects', 'blog', 'contact', 'terminal', 'dashboard'],
+  }
+
   function getCompletions(input: string): string[] {
     if (!input) return commands.map(c => c.name)
 
+    // Check if input matches "command arg..." pattern for sub-completions
+    const spaceIdx = input.indexOf(' ')
+    if (spaceIdx !== -1) {
+      const cmdPart = input.slice(0, spaceIdx)
+      const argPart = input.slice(spaceIdx + 1)
+
+      // Check for two-level sub-commands like "set theme <value>"
+      const argSpaceIdx = argPart.indexOf(' ')
+      if (argSpaceIdx !== -1) {
+        const subCmd = `${cmdPart} ${argPart.slice(0, argSpaceIdx)}`
+        const subArg = argPart.slice(argSpaceIdx + 1).toLowerCase()
+        const deepSubs = subCompletions[subCmd]?.() ?? []
+        if (deepSubs.length > 0) {
+          return deepSubs
+            .filter(s => s.toLowerCase().startsWith(subArg))
+            .map(s => `${subCmd} ${s}`)
+            .slice(0, 8)
+        }
+      }
+
+      // First-level sub-commands
+      const subs = subCompletions[cmdPart]?.() ?? subCompletions[cmdPart.toLowerCase()]?.() ?? []
+      if (subs.length > 0) {
+        const argLower = argPart.toLowerCase()
+        return subs
+          .filter(s => s.toLowerCase().startsWith(argLower))
+          .map(s => `${cmdPart} ${s}`)
+          .slice(0, 8)
+      }
+
+      return []
+    }
+
+    // Command name completion
     const lower = input.toLowerCase()
     const matches: string[] = []
 

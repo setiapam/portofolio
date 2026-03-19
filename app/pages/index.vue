@@ -15,6 +15,27 @@
                 </button>
             </div>
 
+            <!-- Lazy plugin manager overlay -->
+            <Transition name="lazy-fade">
+                <div v-if="showLazy" class="lazy-overlay" @click.self="showLazy = false; lazyPlugins = []">
+                <div class="lazy-panel">
+                    <div class="lazy-header">
+                        <span class="lazy-title">lazy.nvim</span>
+                        <span class="lazy-close" @click="showLazy = false">x</span>
+                    </div>
+                    <div class="lazy-list">
+                        <div v-for="(plugin, i) in lazyPlugins" :key="i" class="lazy-row">
+                            <span class="lazy-check">&#x2713;</span>
+                            <span class="lazy-name">{{ plugin }}</span>
+                        </div>
+                    </div>
+                    <div class="lazy-footer">
+                        Total: {{ lazyPlugins.length }} plugins &middot; All loaded
+                    </div>
+                </div>
+                </div>
+            </Transition>
+
             <!-- Footer -->
             <div class="dashboard-footer">
                 <span class="footer-bolt">&#x26A1;</span> Website loaded in {{ loadTime }}ms
@@ -67,8 +88,8 @@ const menuItems = computed(() => {
         { label: 'Projects', icon: 'search', shortcut: 'p', route: '/projects' },
         { label: 'Blog', icon: 'grep', shortcut: 'b', route: '/blog' },
         { label: 'Contact', icon: 'contact', shortcut: 'c', route: '/contact' },
-        { label: 'Lazy', icon: 'lazy', shortcut: 'l', action: 'easter_egg' },
-        { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'easter_egg' },
+        { label: 'Lazy', icon: 'lazy', shortcut: 'l', action: 'lazy' },
+        { label: 'Quit', icon: 'logout', shortcut: 'q', action: 'quit' },
     ]
 })
 
@@ -85,10 +106,38 @@ function getMenuIcon(icon: string): string {
     return iconMap[icon] ?? ''
 }
 
+const lazyPlugins = ref<string[]>([])
+const showLazy = ref(false)
+
 function handleMenuItem(item: { route?: string; action?: string }) {
-    if (item.action === 'easter_egg') {
-        const { setMessage } = useCommandParser()
+    const { setMessage } = useCommandParser()
+    if (item.action === 'quit') {
         setMessage("E32: Can't quit, this is a website!")
+        return
+    }
+    if (item.action === 'lazy') {
+        showLazy.value = !showLazy.value
+        if (showLazy.value) {
+            lazyPlugins.value = [
+                'nuxt.lua              4.4.2    Loaded',
+                'vue.lua               3.5.30   Loaded',
+                'supabase.lua          2.0.4    Loaded',
+                'tailwindcss.lua       6.14.0   Loaded',
+                'shiki.lua             4.0.2    Loaded',
+                'marked.lua            17.0.4   Loaded',
+                'google-fonts.lua      3.2.0    Loaded',
+                'typescript.lua        strict   Loaded',
+                'vim-mode.lua          1.0.0    Loaded',
+                'telescope.lua         1.0.0    Loaded',
+                'neo-tree.lua          1.0.0    Loaded',
+                'bufferline.lua        1.0.0    Loaded',
+                'solarized-osaka.lua   1.0.0    Loaded',
+            ]
+            setMessage(`Total: ${lazyPlugins.value.length} plugins loaded`)
+        } else {
+            lazyPlugins.value = []
+            setMessage('')
+        }
         return
     }
     if (item.route) {
@@ -105,6 +154,14 @@ function onDashboardKey(e: KeyboardEvent) {
     if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
     if (e.ctrlKey || e.metaKey || e.altKey) return
+
+    if (e.key === 'Escape' && showLazy.value) {
+        e.preventDefault()
+        e.stopPropagation()
+        showLazy.value = false
+        lazyPlugins.value = []
+        return
+    }
 
     const key = e.key
     const item = menuItems.value.find(m => m.shortcut === key)
@@ -256,5 +313,98 @@ useSeoMeta({
         font-size: 11px;
         display: none;
     }
+}
+
+.lazy-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.lazy-panel {
+    width: 520px;
+    max-width: 90vw;
+    max-height: 70vh;
+    background: var(--bg-dark);
+    border: 1px solid var(--bg-visual);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.lazy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--bg-visual);
+}
+
+.lazy-title {
+    color: var(--blue);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.lazy-close {
+    color: var(--comment);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.lazy-close:hover {
+    color: var(--red);
+}
+
+.lazy-list {
+    padding: 8px 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.lazy-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 16px;
+    font-size: 13px;
+}
+
+.lazy-row:hover {
+    background: var(--bg-highlight);
+}
+
+.lazy-check {
+    color: var(--green);
+    flex-shrink: 0;
+}
+
+.lazy-name {
+    color: var(--fg);
+    font-family: var(--font-mono);
+    white-space: pre;
+}
+
+.lazy-footer {
+    padding: 6px 16px;
+    border-top: 1px solid var(--bg-visual);
+    color: var(--comment);
+    font-size: 12px;
+    text-align: center;
+}
+
+.lazy-fade-enter-active,
+.lazy-fade-leave-active {
+    transition: opacity 0.15s ease;
+}
+
+.lazy-fade-enter-from,
+.lazy-fade-leave-to {
+    opacity: 0;
 }
 </style>

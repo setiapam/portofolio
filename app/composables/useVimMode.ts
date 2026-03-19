@@ -18,14 +18,30 @@ export function useVimMode() {
     return Math.floor(main.clientHeight / LINE_HEIGHT)
   }
 
+  function getScrollContainer(): HTMLElement | null {
+    return document.querySelector('.content-area') as HTMLElement | null
+  }
+
   function moveCursor(delta: number) {
     const maxLine = getVisibleLineCount()
     editorState.cursorLine = Math.max(1, Math.min(maxLine, editorState.cursorLine + delta))
+    const container = getScrollContainer()
+    if (container) {
+      container.scrollBy({ top: delta * LINE_HEIGHT, behavior: 'instant' })
+    }
   }
 
   function moveCursorTo(line: number) {
     const maxLine = getVisibleLineCount()
     editorState.cursorLine = Math.max(1, Math.min(maxLine, line))
+    const container = getScrollContainer()
+    if (container) {
+      if (line <= 1) {
+        container.scrollTo({ top: 0, behavior: 'instant' })
+      } else {
+        container.scrollTo({ top: container.scrollHeight, behavior: 'instant' })
+      }
+    }
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -74,6 +90,14 @@ export function useVimMode() {
       if (e.key === 'b') {
         e.preventDefault()
         editorState.sidebarOpen = !editorState.sidebarOpen
+      } else if (e.key === 'd') {
+        e.preventDefault()
+        const half = Math.floor(getVisibleLineCount() / 2)
+        moveCursor(half)
+      } else if (e.key === 'u') {
+        e.preventDefault()
+        const half = Math.floor(getVisibleLineCount() / 2)
+        moveCursor(-half)
       }
       return
     }
