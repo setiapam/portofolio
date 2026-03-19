@@ -51,6 +51,52 @@ export default defineNuxtConfig({
     '/admin/**': {
       robots: 'noindex, nofollow',
     },
+    // Hashed build assets — immutable, cache 1 year
+    '/_nuxt/**': {
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    },
+    // Static files — cache 1 week
+    '/favicon.ico': {
+      headers: { 'Cache-Control': 'public, max-age=604800' },
+    },
+    '/favicon.svg': {
+      headers: { 'Cache-Control': 'public, max-age=604800' },
+    },
+    '/robots.txt': {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+    // Public pages — short cache with stale-while-revalidate
+    '/': {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+      },
+    },
+    '/about': {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+      },
+    },
+    '/projects/**': {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+      },
+    },
+    '/blog/**': {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+      },
+    },
+    '/contact': {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+      },
+    },
+    // API routes — no cache
+    '/api/**': {
+      headers: { 'Cache-Control': 'no-store' },
+    },
   },
 
   site: {

@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.0.1] - 2026-03-20
+
+### Changed
+
+- **Cache control optimization** — Configure `routeRules` in `nuxt.config.ts` and `_headers` file for Cloudflare Pages. Build assets (`_nuxt/*`) cached for 1 year (immutable), static files for 1 week, public pages for 1 hour in browser + 1 day at CDN edge with stale-while-revalidate. Admin pages excluded from cache. Minimizes requests to stay within Cloudflare Pages daily quota.
+
+---
+
 ## [1.0.0] - 2026-03-19
 
 Initial release — fully functional Neovim-themed portfolio website.
