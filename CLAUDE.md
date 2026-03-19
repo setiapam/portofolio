@@ -22,6 +22,13 @@ Interactive portfolio website that simulates Neovim in the browser. Visitors nav
 4. **Content from Supabase, always.** Hardcode nothing. Even the dashboard menu items come from `site_config` table.
 5. **TypeScript strict mode.** No `any` types. All Supabase responses are typed via generated types.
 6. **Monospace only.** JetBrains Mono for everything. No sans-serif, no serif, no exceptions.
+7. **Versioning & Changelog.** Every change must be recorded in `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format with [Semantic Versioning](https://semver.org/). When committing changes:
+   - **PATCH** (x.x.1): bug fixes, typos, style tweaks
+   - **MINOR** (x.1.0): new features, enhancements, new pages/components
+   - **MAJOR** (1.0.0): breaking changes, major rewrites, architecture changes
+   - Add entries under `## [Unreleased]` during development. When ready to release, move them to a versioned section with the date.
+   - Categories: `Added`, `Changed`, `Fixed`, `Removed`, `Security`
+   - Always update the version in `CHANGELOG.md` before or alongside the commit.
 
 ---
 
