@@ -135,7 +135,3 @@ npm run preview
 | `Esc` | Any | Return to normal mode |
 | `Ctrl+b` | Any | Toggle NeoTree sidebar |
 | `Ctrl+S` | Admin | Save |
-
-## License
-
-Private project.
