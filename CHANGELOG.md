@@ -6,6 +6,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.0.2] - 2026-03-22
+
+### Added
+
+- **Devicon skill icons** — Import Devicon CSS via CDN and render skill icons on the about page next to skill names. Admin skills editor now shows a live icon preview and clearer placeholder format (`devicon-react-original`).
+
+### Fixed
+
+- **Admin experiences date input** — Fix "undefined" appearing when typing dates. The computed getter/setter created a feedback loop where partial input (e.g. "22") was stored as non-ISO string, then `isoToDisplay` produced "undefined/undefined/22". Replaced with separate display refs that only sync to the model when a complete dd/mm/yyyy date is entered.
+
+---
+
 ## [1.0.1] - 2026-03-20
 
 ### Changed

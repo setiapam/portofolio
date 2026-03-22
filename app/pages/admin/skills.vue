@@ -39,7 +39,8 @@
                     </div>
                     <div class="field">
                         <label class="field-label">icon:</label>
-                        <input v-model="editing.icon" class="field-input" placeholder="devicon identifier" />
+                        <input v-model="editing.icon" class="field-input" placeholder="e.g. devicon-react-original" />
+                        <i v-if="editing.icon" :class="editing.icon" style="font-size: 18px; color: var(--cyan); flex-shrink: 0;"></i>
                     </div>
                     <div class="field">
                         <label class="field-label">sort_order:</label>
@@ -48,6 +49,7 @@
                     <div class="blank-line">&nbsp;</div>
                     <div class="skill-preview">
                         <span class="preview-label">preview:</span>
+                        <i v-if="editing.icon" :class="editing.icon" style="font-size: 16px; color: var(--cyan);"></i>
                         <span class="preview-name">{{ editing.name }}</span>
                         <span class="preview-bar">{{ getSkillBar(editing.level) }}</span>
                         <span class="preview-category">{{ editing.category }}</span>

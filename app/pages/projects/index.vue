@@ -149,7 +149,7 @@ useSeoMeta({
 
 .ls-date {
     color: var(--blue);
-    width: 60px;
+    width: 100px;
     flex-shrink: 0;
 }
 

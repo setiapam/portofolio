@@ -24,13 +24,15 @@
                     </div>
                     <div class="field">
                         <label class="field-label">start_date:</label>
-                        <input v-model="startDateDisplay" class="field-input" placeholder="dd/mm/yyyy" />
+                        <input :value="startDateDisplay" @input="onStartDateInput" class="field-input"
+                            placeholder="dd/mm/yyyy" />
                     </div>
                     <div class="field">
                         <label class="field-label">end_date:</label>
-                        <input v-model="endDateDisplay" class="field-input"
-                            placeholder="dd/mm/yyyy (kosongkan untuk present)" />
-                        <button v-if="editing.end_date" class="btn-clear" @click="editing.end_date = null"
+                        <input :value="endDateDisplay" @input="onEndDateInput" class="field-input"
+                            placeholder="dd/mm/yyyy (leave blank for present)" />
+                        <button v-if="editing.end_date" class="btn-clear"
+                            @click="editing.end_date = null; endDateDisplay = ''"
                             title="Set as present">present</button>
                     </div>
                     <div class="field">
@@ -93,19 +95,38 @@ function displayToIso(display: string): string | null {
     return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`
 }
 
-const startDateDisplay = computed({
-    get: () => isoToDisplay(editing.value?.start_date),
-    set: (val: string) => {
-        if (editing.value) editing.value.start_date = displayToIso(val) ?? ''
-    },
-})
+const startDateDisplay = ref('')
+const endDateDisplay = ref('')
 
-const endDateDisplay = computed({
-    get: () => isoToDisplay(editing.value?.end_date),
-    set: (val: string) => {
-        if (editing.value) editing.value.end_date = displayToIso(val)
-    },
-})
+watch(() => editing.value?.start_date, (iso) => {
+    startDateDisplay.value = isoToDisplay(iso ?? null)
+}, { immediate: true })
+
+watch(() => editing.value?.end_date, (iso) => {
+    endDateDisplay.value = isoToDisplay(iso ?? null)
+}, { immediate: true })
+
+function onStartDateInput(e: Event) {
+    const val = (e.target as HTMLInputElement).value
+    startDateDisplay.value = val
+    const iso = displayToIso(val)
+    if (editing.value && iso && /^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+        editing.value.start_date = iso
+    }
+}
+
+function onEndDateInput(e: Event) {
+    const val = (e.target as HTMLInputElement).value
+    endDateDisplay.value = val
+    const iso = displayToIso(val)
+    if (editing.value) {
+        if (!val) {
+            editing.value.end_date = null
+        } else if (iso && /^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+            editing.value.end_date = iso
+        }
+    }
+}
 
 const techStackInput = computed({
     get: () => (editing.value?.tech_stack ?? []).join(', '),
@@ -118,20 +139,25 @@ const techStackInput = computed({
 
 function selectItem(row: Record<string, any>) {
     editing.value = { ...row }
+    startDateDisplay.value = isoToDisplay(row.start_date ?? null)
+    endDateDisplay.value = isoToDisplay(row.end_date ?? null)
     message.value = ''
 }
 
 function createNew() {
+    const today = new Date().toISOString().slice(0, 10)
     editing.value = {
         id: null,
         company: '',
         role: '',
         description: '',
-        start_date: new Date().toISOString().slice(0, 10),
+        start_date: today,
         end_date: null,
         tech_stack: [],
         sort_order: (experiences.value?.length ?? 0) + 1,
     }
+    startDateDisplay.value = isoToDisplay(today)
+    endDateDisplay.value = ''
     message.value = ''
 }
 

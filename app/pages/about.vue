@@ -48,6 +48,7 @@
                 <div v-for="category in skillCategories" :key="category" class="skill-category">
                     <div class="subheading">## {{ category }}</div>
                     <div v-for="skill in skillsByCategory(category)" :key="skill.id" class="skill-line">
+                        <i v-if="skill.icon" :class="skill.icon" class="skill-icon"></i>
                         <span class="skill-name">{{ skill.name }}</span>
                         <span class="skill-bar">{{ getSkillBar(skill.level) }}</span>
                     </div>
@@ -265,6 +266,14 @@ useHead({
     display: flex;
     gap: 12px;
     align-items: center;
+}
+
+.skill-icon {
+    color: var(--cyan);
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
 }
 
 .skill-name {
