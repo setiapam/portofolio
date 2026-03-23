@@ -40,18 +40,25 @@ export default defineEventHandler(async (event) => {
     }
 
     // Send notification email to admin (non-blocking)
-    if (config.adminEmail) {
+    const adminEmail = config.adminEmail
+    const serviceKey = config.supabaseServiceKey
+    console.log('[contact] adminEmail:', adminEmail ? 'SET' : 'EMPTY')
+    console.log('[contact] serviceKey:', serviceKey ? `SET (${serviceKey.substring(0, 10)}...)` : 'EMPTY')
+
+    if (adminEmail) {
         const { subject, html } = buildNotificationEmail(
             { ...messageData, created_at: new Date().toISOString() },
             config.public.siteUrl,
         )
         sendMail({
-            to: config.adminEmail,
+            to: adminEmail,
             subject,
             html,
             replyTo: messageData.email,
+        }).then(() => {
+            console.log('[contact] Notification email sent successfully')
         }).catch((err) => {
-            console.error('Failed to send notification email:', err)
+            console.error('[contact] Failed to send notification email:', err)
         })
     }
 
