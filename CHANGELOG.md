@@ -6,6 +6,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **Email notification on new message** — When a visitor submits a contact form, an email notification with Neovim-themed template is sent to admin via Gmail SMTP (nodemailer)
+- **Reply to messages from admin panel** — Admin can reply to messages directly from `/admin/messages`. Reply is sent as a styled email with original message quoted. Messages show "REPLIED" badge after reply
+- **Neovim-themed email templates** — Custom HTML email templates matching the portfolio's Solarized Osaka design with BufferLine header, StatusLine footer, and monospace typography
+- **`replied_at` column on messages table** — Tracks when admin replied to a message (migration `003_messages_replied_at.sql`)
+
+---
+
 ## [1.0.2] - 2026-03-22
 
 ### Added

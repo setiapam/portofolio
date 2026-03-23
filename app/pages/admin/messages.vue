@@ -15,12 +15,39 @@
                     <span class="msg-email">&lt;{{ msg.email }}&gt;</span>
                     <span class="msg-date">{{ formatDate(msg.created_at) }}</span>
                     <span v-if="!msg.read" class="msg-badge">NEW</span>
+                    <span v-if="msg.replied_at" class="msg-badge replied">REPLIED</span>
                 </div>
                 <div v-if="msg.subject" class="msg-subject">Subject: {{ msg.subject }}</div>
                 <div class="msg-body">{{ msg.message }}</div>
                 <div class="msg-actions">
                     <button v-if="!msg.read" class="btn-read" @click="markRead(msg.id)">Mark read</button>
+                    <button class="btn-reply" @click="openReply(msg)">Reply</button>
                     <button class="btn-delete" @click="deleteMsg(msg.id)">Delete</button>
+                </div>
+
+                <!-- Reply form -->
+                <div v-if="replyingTo === msg.id" class="reply-form">
+                    <div class="reply-header">
+                        <span class="reply-prompt">-- Replying to {{ msg.name }} &lt;{{ msg.email }}&gt;</span>
+                    </div>
+                    <textarea
+                        ref="replyTextarea"
+                        v-model="replyBody"
+                        class="reply-input"
+                        rows="6"
+                        placeholder="Type your reply..."
+                        @keydown.ctrl.enter="sendReply(msg.id)"
+                        @keydown.meta.enter="sendReply(msg.id)"
+                    />
+                    <div class="reply-actions">
+                        <span class="reply-hint">Ctrl+Enter to send</span>
+                        <button class="btn-cancel" @click="closeReply">:q!</button>
+                        <button class="btn-send" :disabled="replySending" @click="sendReply(msg.id)">
+                            {{ replySending ? 'Sending...' : ':w send' }}
+                        </button>
+                    </div>
+                    <div v-if="replyError" class="reply-error">E474: {{ replyError }}</div>
+                    <div v-if="replySuccess" class="reply-success">Message sent successfully!</div>
                 </div>
             </div>
         </div>
@@ -39,6 +66,74 @@ const { data: messages, refresh } = await useAsyncData('admin-messages', async (
     const { data } = await client.from('messages').select('*').order('created_at', { ascending: false })
     return (data ?? []) as Message[]
 })
+
+const replyingTo = ref<string | null>(null)
+const replyBody = ref('')
+const replySending = ref(false)
+const replyError = ref('')
+const replySuccess = ref(false)
+const replyTextarea = ref<HTMLTextAreaElement[]>()
+
+function openReply(msg: Message) {
+    if (replyingTo.value === msg.id) {
+        closeReply()
+        return
+    }
+    replyingTo.value = msg.id
+    replyBody.value = ''
+    replyError.value = ''
+    replySuccess.value = false
+    nextTick(() => {
+        replyTextarea.value?.[0]?.focus()
+    })
+}
+
+function closeReply() {
+    replyingTo.value = null
+    replyBody.value = ''
+    replyError.value = ''
+    replySuccess.value = false
+}
+
+async function sendReply(messageId: string) {
+    if (!replyBody.value.trim()) {
+        replyError.value = 'Reply body cannot be empty'
+        return
+    }
+
+    replySending.value = true
+    replyError.value = ''
+    replySuccess.value = false
+
+    try {
+        const session = useSupabaseSession()
+        const res = await $fetch('/api/reply', {
+            method: 'POST',
+            body: {
+                messageId,
+                replyBody: replyBody.value,
+            },
+            headers: {
+                Authorization: `Bearer ${session.value?.access_token}`,
+            },
+        })
+
+        if (res.success) {
+            replySuccess.value = true
+            setTimeout(() => {
+                closeReply()
+                refresh()
+            }, 1500)
+        }
+    }
+    catch (err: unknown) {
+        const error = err as { data?: { message?: string } }
+        replyError.value = error.data?.message || 'Failed to send reply'
+    }
+    finally {
+        replySending.value = false
+    }
+}
 
 async function markRead(id: string) {
     await client.from('messages').update({ read: true }).eq('id', id)
@@ -131,6 +226,10 @@ useHead({ title: 'Admin - Messages' })
     border-radius: 2px;
 }
 
+.msg-badge.replied {
+    background: var(--green);
+}
+
 .msg-subject {
     color: var(--yellow);
     font-size: 13px;
@@ -150,7 +249,10 @@ useHead({ title: 'Admin - Messages' })
 }
 
 .btn-read,
-.btn-delete {
+.btn-delete,
+.btn-reply,
+.btn-cancel,
+.btn-send {
     font-family: var(--font-mono);
     font-size: 12px;
     background: transparent;
@@ -170,6 +272,16 @@ useHead({ title: 'Admin - Messages' })
     color: var(--bg);
 }
 
+.btn-reply {
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+.btn-reply:hover {
+    background: var(--blue);
+    color: var(--bg);
+}
+
 .btn-delete {
     color: var(--red);
     border-color: var(--red);
@@ -178,5 +290,94 @@ useHead({ title: 'Admin - Messages' })
 .btn-delete:hover {
     background: var(--red);
     color: var(--bg);
+}
+
+/* Reply form */
+.reply-form {
+    margin-top: 12px;
+    border-top: 1px solid var(--bg-highlight);
+    padding-top: 12px;
+}
+
+.reply-header {
+    margin-bottom: 8px;
+}
+
+.reply-prompt {
+    color: var(--comment);
+    font-style: italic;
+    font-size: 12px;
+}
+
+.reply-input {
+    width: 100%;
+    background: var(--bg-dark);
+    color: var(--fg);
+    border: 1px solid var(--bg-highlight);
+    padding: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.reply-input:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+.reply-input::placeholder {
+    color: var(--comment);
+}
+
+.reply-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.reply-hint {
+    color: var(--comment);
+    font-size: 11px;
+    margin-right: auto;
+}
+
+.btn-cancel {
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.btn-cancel:hover {
+    background: var(--orange);
+    color: var(--bg);
+}
+
+.btn-send {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.btn-send:hover {
+    background: var(--green);
+    color: var(--bg);
+}
+
+.btn-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.reply-error {
+    color: var(--red);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.reply-success {
+    color: var(--green);
+    font-size: 12px;
+    margin-top: 8px;
 }
 </style>
