@@ -39,27 +39,23 @@ export default defineEventHandler(async (event) => {
         throw createError({ statusCode: 500, message: 'Failed to save message' })
     }
 
-    // Send notification email to admin (non-blocking)
-    const adminEmail = config.adminEmail
-    const serviceKey = config.supabaseServiceKey
-    console.log('[contact] adminEmail:', adminEmail ? 'SET' : 'EMPTY')
-    console.log('[contact] serviceKey:', serviceKey ? `SET (${serviceKey.substring(0, 10)}...)` : 'EMPTY')
-
-    if (adminEmail) {
+    // Send notification email to admin
+    if (config.adminEmail) {
         const { subject, html } = buildNotificationEmail(
             { ...messageData, created_at: new Date().toISOString() },
             config.public.siteUrl,
         )
-        sendMail({
-            to: adminEmail,
-            subject,
-            html,
-            replyTo: messageData.email,
-        }).then(() => {
-            console.log('[contact] Notification email sent successfully')
-        }).catch((err) => {
+        try {
+            await sendMail({
+                to: config.adminEmail,
+                subject,
+                html,
+                replyTo: messageData.email,
+            })
+        }
+        catch (err) {
             console.error('[contact] Failed to send notification email:', err)
-        })
+        }
     }
 
     return { success: true }
