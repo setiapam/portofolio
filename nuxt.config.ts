@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    supabaseServiceKey: '',
+    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVCIE_KEY || '',
     adminEmail: process.env.ADMIN_EMAIL || '',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://murphi.my.id',
