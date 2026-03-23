@@ -24,10 +24,6 @@ export default defineEventHandler(async (event) => {
 
     const config = useRuntimeConfig()
 
-    if (!config.smtpUser) {
-        throw createError({ statusCode: 500, message: 'SMTP not configured' })
-    }
-
     // Verify auth — check Authorization header
     const authHeader = getHeader(event, 'authorization')
     if (!authHeader) {
@@ -85,7 +81,7 @@ export default defineEventHandler(async (event) => {
         to: message.email,
         subject,
         html,
-        replyTo: config.smtpUser,
+        replyTo: config.adminEmail || undefined,
     })
 
     // Mark as read and store reply timestamp

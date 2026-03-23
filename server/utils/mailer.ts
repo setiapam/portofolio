@@ -1,35 +1,3 @@
-import nodemailer from 'nodemailer'
-
-interface MailConfig {
-    smtpHost: string
-    smtpPort: number
-    smtpUser: string
-    smtpPass: string
-}
-
-function createTransport(config: MailConfig) {
-    return nodemailer.createTransport({
-        host: config.smtpHost,
-        port: config.smtpPort,
-        secure: config.smtpPort === 465,
-        auth: {
-            user: config.smtpUser,
-            pass: config.smtpPass,
-        },
-    })
-}
-
-function getMailConfig(): MailConfig & { smtpFrom: string } {
-    const config = useRuntimeConfig()
-    return {
-        smtpHost: config.smtpHost,
-        smtpPort: Number(config.smtpPort) || 587,
-        smtpUser: config.smtpUser,
-        smtpPass: config.smtpPass,
-        smtpFrom: config.smtpFrom || config.smtpUser,
-    }
-}
-
 // ── Neovim-themed base layout ───────────────────────────────────
 function wrapTemplate(content: string, siteUrl: string): string {
     return `<!DOCTYPE html>
@@ -166,21 +134,33 @@ export function buildReplyEmail(opts: {
     }
 }
 
-// ── Send email ──────────────────────────────────────────────────
+// ── Send email via Supabase Edge Function ───────────────────────
 export async function sendMail(opts: {
     to: string
     subject: string
     html: string
     replyTo?: string
 }): Promise<void> {
-    const config = getMailConfig()
-    const transport = createTransport(config)
+    const config = useRuntimeConfig()
+    const supabaseUrl = config.public.supabase.url
+    const serviceKey = config.supabaseServiceKey || config.public.supabase.key
 
-    await transport.sendMail({
-        from: config.smtpFrom,
-        to: opts.to,
-        subject: opts.subject,
-        html: opts.html,
-        replyTo: opts.replyTo,
+    const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${serviceKey}`,
+        },
+        body: JSON.stringify({
+            to: opts.to,
+            subject: opts.subject,
+            html: opts.html,
+            replyTo: opts.replyTo,
+        }),
     })
+
+    if (!res.ok) {
+        const error = await res.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(`Edge function error: ${error.error || res.statusText}`)
+    }
 }

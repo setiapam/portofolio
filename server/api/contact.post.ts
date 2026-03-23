@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Send notification email to admin (non-blocking)
-    if (config.adminEmail && config.smtpUser) {
+    if (config.adminEmail) {
         const { subject, html } = buildNotificationEmail(
             { ...messageData, created_at: new Date().toISOString() },
             config.public.siteUrl,
